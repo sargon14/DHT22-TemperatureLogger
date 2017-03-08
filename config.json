@@ -39,5 +39,5 @@
 		"connectionCheckDay":"5",
 		"connectionCheckHour":"23"
 	},
-	"sqlbackuppath":"/home/pi/DHT22-TemperatureLogger/Backups/",
+	"sqlbackuppath":"/home/pi/DS18B20-TemperatureLogger/Backups/",
 }
