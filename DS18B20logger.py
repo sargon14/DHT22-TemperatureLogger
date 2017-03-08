@@ -303,7 +303,7 @@ def main():
 		currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 		try:
 			# only works for DS18B20...add some of the old code back in if you want to mix sensor types
-			sensorTemperature, sensorTemperatureF = DS18B20read.readtemp()
+			sensorTemperature, sensorTemperatureF = DS18B20read.read_temp()
 			print sensorId,"temp:",sensorTemperature,"tempF:",sensorTemperatureF
 			limitsOk,warningMessage = checkLimits(sensorId,sensorTemperature,sensor["high_limit"],sensor["low_limit"])
 		except:
