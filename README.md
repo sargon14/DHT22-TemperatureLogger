@@ -8,3 +8,7 @@ The DS18B20 is part of a family of temperature sensors that use the OneWire comm
 ## Next steps:
 
 To fix the multiple-sensor-handling features, I'm going to switch my sensor handling to [timofurrer's excellent w1thermsensor package](https://github.com/timofurrer/w1thermsensor). This will make DS18B20read.py unnecessary. The configuration file will also need refactoring. Most likely, the sensor ID numbers will have to be manually entered into config.json in order for the datalogging to make sense...
+
+## Examples
+
+Check the temperature of my apartment at http://rlbtemplogger.ddns.net/!
