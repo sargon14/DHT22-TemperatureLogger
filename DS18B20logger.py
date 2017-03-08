@@ -30,39 +30,42 @@
 #coding=utf-8
 
 import os
-import re
+# import re
 import sys
 import datetime
 from datetime import timedelta
 import json
-import subprocess
+# import subprocess
 import MySQLdb
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
+import DS18B20read
+
+# function for reading DS18B20 sensors is: temp_c, temp_f = DS18B20read.readtemp()
 
 # function for reading DHT22 sensors
-def sensorReadings(gpio, sensor):
-
-	configurations = getConfigurations()
-	adafruit = configurations["adafruitpath"]
-
-	sensorReadings = subprocess.check_output(['sudo',adafruit,sensor,gpio])
-
-	try:
-		# try to read neagtive numbers
-		temperature = re.findall(r"Temp=(-\d+.\d+)", sensorReadings)[0]
-	except:
-		# if negative numbers caused exception, they are supposed to be positive
-		try:
-			temperature = re.findall(r"Temp=(\d+.\d+)", sensorReadings)[0]
-		except:
-			pass
-	humidity = re.findall(r"Humidity=(\d+.\d+)", sensorReadings)[0]
-	intTemp = float(temperature)
-	intHumidity = float(humidity)
-
-	return intTemp, intHumidity
+#def sensorReadings(gpio, sensor):
+#
+#	configurations = getConfigurations()
+#	adafruit = configurations["adafruitpath"]
+#
+#	sensorReadings = subprocess.check_output(['sudo',adafruit,sensor,gpio])
+#
+#	try:
+#		# try to read neagtive numbers
+#		temperature = re.findall(r"Temp=(-\d+.\d+)", sensorReadings)[0]
+#	except:
+#		# if negative numbers caused exception, they are supposed to be positive
+#		try:
+#			temperature = re.findall(r"Temp=(\d+.\d+)", sensorReadings)[0]
+#		except:
+#			pass
+#	humidity = re.findall(r"Humidity=(\d+.\d+)", sensorReadings)[0]
+#	intTemp = float(temperature)
+#	intHumidity = float(humidity)
+#
+#	return intTemp, intHumidity
 
 # function for getting weekly average temperatures.
 def getWeeklyAverageTemp(sensor):
@@ -142,15 +145,15 @@ def databaseHelper(sqlCommand,sqloperation):
 	elif sqloperation == "Backup":
 		# Getting current datetime to create seprate backup folder like "12012013-071334".
 		date = datetime.date.today().strftime("%Y-%m-%d")
-		backupbathoftheday = backuppath + date
+		backuppathoftheday = backuppath + date
 
 		# Checking if backup folder already exists or not. If not exists will create it.
-		if not os.path.exists(backupbathoftheday):
-			os.makedirs(backupbathoftheday)
+		if not os.path.exists(backuppathoftheday):
+			os.makedirs(backuppathoftheday)
 
 		# Dump database
 		db = database
-		dumpcmd = "mysqldump -u " + user + " -p" + password + " " + db + " > " + backupbathoftheday + "/" + db + ".sql"
+		dumpcmd = "mysqldump -u " + user + " -p" + password + " " + db + " > " + backuppathoftheday + "/" + db + ".sql"
 		os.system(dumpcmd)
 
 	return data
@@ -211,26 +214,18 @@ def checkWarningLog(sensor, sensortemp):
 	return okToUpdate, warning
 
 	# Function for checking limits. If temperature is lower or greater than limit -> do something
-def checkLimits(sensor,sensorTemperature,sensorHumidity,sensorhighlimit,sensorlowlimit,humidityHighLimit,humidityLowLimit):
+def checkLimits(sensor,sensorTemperature,sensorhighlimit,sensorlowlimit):
 
 	check = True
 	warningmsg = ""
 
 	# check temperature measurements against limits
 	if float(sensorTemperature) < float(sensorlowlimit):
-		warningmsg = "Temperature low on sensor: {0}\nTemperature: {1}\nTemperature limit: {2}\nHumidity: {3}".format(sensor,sensorTemperature,sensorlowlimit,sensorHumidity)
+		warningmsg = "Temperature low on sensor: {0}\nTemperature: {1}\nTemperature limit: {2}".format(sensor,sensorTemperature,sensorlowlimit)
 		check = False
 	elif float(sensorTemperature) > float(sensorhighlimit):
-		warningmsg = "Temperature high on sensor: {0}\nTemperature: {1}\nTemperature limit: {2}\nHumidity: {3}".format(sensor,sensorTemperature,sensorhighlimit,sensorHumidity)
+		warningmsg = "Temperature high on sensor: {0}\nTemperature: {1}\nTemperature limit: {2}".format(sensor,sensorTemperature,sensorhighlimit)
 		check = False
-
-	# check humidity measurements against limits
-	elif float(sensorHumidity) < float(humidityLowLimit):
-		warningmsg = "Humidity low on sensor: {0}\nTemperature: {1}\nHumidity limit: {2}\nHumidity: {3}".format(sensor,sensorTemperature,humidityLowLimit,sensorHumidity)
-		check = False
-        elif float(sensorHumidity) > float(humidityHighLimit):
-       	        warningmsg = "Humidity high on sensor: {0}\nTemperature: {1}\nHumidity limit: {2}\nHumidity: {3}".format(sensor,sensorTemperature,humidityHighLimit,sensorHumidity)
-                check = False
 
 	return check,warningmsg
 
@@ -307,10 +302,10 @@ def main():
 		#For better accuracy, or use mysql timestamp DEFAULT CURRENT_TIMESTAMP
 		currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 		try:
-			# type of the sensor used, e.g. DHT22 = 22
-			sensorTemperature, sensorHumidity = sensorReadings(sensor["gpio"], sensor["type"])
-			print sensorId,"temp:",sensorTemperature,"hum:",sensorHumidity
-			limitsOk,warningMessage = checkLimits(sensorId,sensorTemperature,sensorHumidity,sensor["high_limit"],sensor["low_limit"],sensor["humidity_high_limit"],sensor["humidity_low_limit"])
+			# only works for DS18B20...add some of the old code back in if you want to mix sensor types
+			sensorTemperature, sensorTemperatureF = DS18B20read.readtemp()
+			print sensorId,"temp:",sensorTemperature,"tempF:",sensorTemperatureF
+			limitsOk,warningMessage = checkLimits(sensorId,sensorTemperature,sensor["high_limit"],sensor["low_limit"])
 		except:
 			print sensorId,"failed to read"
 			emailWarning("Failed to read {0} sensor".format(sensorId),msgType)
@@ -344,9 +339,9 @@ def main():
 
 			# insert values to db
 			try:
-				sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s', humidity='%s'" % (currentTime,sensorId,sensorTemperature,sensorHumidity)
+				sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime,sensorId,sensorTemperature)
 				# This row below sets temperature as fahrenheit instead of celsius. Comment above line and uncomment one below to take changes into use
-				#sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s', humidity='%s'" % (currentTime,sensorId,(sensorTemperature*(9.0/5.0)+32),sensorHumidity)
+				#sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime,sensorId,(sensorTemperatureF)
 				databaseHelper(sqlCommand,"Insert")
 
 		   	except:
