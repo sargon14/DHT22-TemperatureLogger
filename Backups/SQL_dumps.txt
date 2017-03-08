@@ -1,1 +1,1 @@
-DHT22logger Script takes SQLdumps from temperature database to this folder every day at 05.00
+DS18B20logger Script takes SQLdumps from temperature database to this folder every day at 05.00
