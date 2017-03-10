@@ -15,7 +15,7 @@
 		},
 		{
 		"id":"Inside",
-		"gpio":"4",
+		"gpio":"5",
 		"type":"DS18B20",
 		"low_limit":"5",
 		"high_limit":"25",
