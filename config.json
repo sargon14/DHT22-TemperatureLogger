@@ -7,7 +7,7 @@
 	},
 	"sensors":[
 		{
-		"tag":"Outside",
+		"tag":"Couch",
 		"type":"DS18B20",
 		"id":"000008a905f8",
 		"low_limit":"-20",
