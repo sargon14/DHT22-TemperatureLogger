@@ -7,18 +7,11 @@
 	},
 	"sensors":[
 		{
-		"id":"Outside",
-		"gpio":"4",
+		"tag":"Outside",
 		"type":"DS18B20",
+		"id":"000008a905f8",
 		"low_limit":"-20",
-		"high_limit":"35",
-		},
-		{
-		"id":"Inside",
-		"gpio":"4",
-		"type":"DS18B20",
-		"low_limit":"5",
-		"high_limit":"25",
+		"high_limit":"35"
 		}
 	],
 	"mailinfo":{
@@ -39,5 +32,5 @@
 		"connectionCheckDay":"5",
 		"connectionCheckHour":"23"
 	},
-	"sqlbackuppath":"/home/pi/DS18B20-TemperatureLogger/Backups/",
+	"sqlbackuppath":"/home/pi/DS18B20-TemperatureLogger/Backups/"
 }
