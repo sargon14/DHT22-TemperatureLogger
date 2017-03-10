@@ -40,10 +40,11 @@ import MySQLdb
 import smtplib
 from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
-import DS18B20read
+# import DS18B20read
+from w1thermsensor import W1ThermSensor
+
 
 # function for reading DS18B20 sensors is: temp_c, temp_f = DS18B20read.readtemp()
-
 # function for reading DHT22 sensors
 #def sensorReadings(gpio, sensor):
 #
@@ -245,7 +246,13 @@ def main():
 	configurations = getConfigurations()
 
 	# Sensors
-	sensors = configurations["sensors"]
+	sensors = [W1ThermSensor(40,s["id"]) for s in configurations["sensors"]]
+	for i, s in enumerate(sensors):
+		s.tag = configurations["sensors"][i]["tag"]
+        s.id = configurations["sensors"][i]["id"]
+        s.high_limit = float(configurations["sensors"][i]["high_limit"])
+        s.low_limit = float(configurations["sensors"][i]["low_limit"])
+
 
 	# Backup enabled
 	backupEnabled = configurations["sqlBackupDump"]["backupDumpEnabled"]
@@ -271,23 +278,22 @@ def main():
 	if connectionCheckEnabled:
 		if str(d) == str(connectionCheckDay) and str(h.hour) == str(connectionCheckHour):
 			for sensor in sensors:
-				sensorId = sensor["id"]
 				okToUpdate = False
 				#For better accuracy, or use mysql timestamp DEFAULT CURRENT_TIMESTAMP
 				currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 				try:
-					sensorWeeklyAverage = getWeeklyAverageTemp(sensorId)
+					sensorWeeklyAverage = getWeeklyAverageTemp(sensor.tag)
 					if sensorWeeklyAverage != None and sensorWeeklyAverage != '':
-						checkSensor = sensorId+" conchck"
+						checkSensor = sensor.tag+" conchck"
 						okToUpdate, tempWarning = checkWarningLog(checkSensor,sensorWeeklyAverage)
 						if okToUpdate == True:
 							msgType = "Info"
-							Message = "Connection check. Weekly average from {0} is {1}".format(sensorId,sensorWeeklyAverage)
+							Message = "Connection check. Weekly average from {0} is {1}".format(sensor.tag,sensorWeeklyAverage)
 							emailWarning(Message, msgType)
-							sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTime,checkSensor,sensor["low_limit"],sensorWeeklyAverage)
+							sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTime,checkSensor,sensor.low_limit,sensorWeeklyAverage)
 							databaseHelper(sqlCommand,"Insert")
 				except:
-					emailWarning("Couldn't get average temperature to sensor: {0} from current week".format(sensorId),msgType)
+					emailWarning("Couldn't get average temperature to sensor: {0} from current week".format(sensor.tag),msgType)
 					pass
 
 	# default message type to send as email. DO NOT CHANGE
@@ -296,19 +302,20 @@ def main():
 
 	# Sensor readings and limit check
 	for sensor in sensors:
-		sensorId = sensor["id"]
 		okToUpdate = False
 		sensorError = False
 		#For better accuracy, or use mysql timestamp DEFAULT CURRENT_TIMESTAMP
 		currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 		try:
 			# only works for DS18B20...add some of the old code back in if you want to mix sensor types
-			sensorTemperature, sensorTemperatureF = DS18B20read.read_temp()
-			print sensorId,"temp:",sensorTemperature,"tempF:",sensorTemperatureF
-			limitsOk,warningMessage = checkLimits(sensorId,sensorTemperature,sensor["high_limit"],sensor["low_limit"])
+			sensorTemperature = sensor.get_temperature(sensor.DEGREES_C)
+			sensorTemperatureF = sensor.get_temperature(sensor.DEGREES_F)
+
+			print sensor.tag,"temp:",sensorTemperature,"tempF:",sensorTemperatureF
+			limitsOk,warningMessage = checkLimits(sensor.tag,sensorTemperature,sensor.high_limit,sensor.low_limit)
 		except:
-			print sensorId,"failed to read"
-			emailWarning("Failed to read {0} sensor".format(sensorId),msgType)
+			print sensor.tag,"failed to read"
+			emailWarning("Failed to read {0} sensor".format(sensor.tag),msgType)
 			sensorError = True
 			pass
 
@@ -317,10 +324,10 @@ def main():
 				# if limits were trigged
 				if limitsOk == False:
 					# check log when was last warning sended
-					okToUpdate, tempWarning = checkWarningLog(sensorId,sensorTemperature)
+					okToUpdate, tempWarning = checkWarningLog(sensor.tag,sensorTemperature)
 			except:
 				# if limits were triggered but something caused error, send warning mail to indicate this
-				emailWarning("Failed to check/insert log entry from mailsendlog. Sensor: {0}".format(sensorId),msgType)
+				emailWarning("Failed to check/insert log entry from mailsendlog. Sensor: {0}".format(sensor.tag),msgType)
 				sys.exit(0)
 
 			if okToUpdate == True:
@@ -331,17 +338,17 @@ def main():
 				try:
 				# Insert line to database to indicate when warning was sent
 					currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-					sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTime,sensorId,sensor["low_limit"],sensorTemperature)
+					sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTime,sensor.tag,sensor.low_limit,sensorTemperature)
 					databaseHelper(sqlCommand,"Insert")
 				except:
 					# if database insert failed, send warning to indicate that there is some issues with database
-					emailWarning("Failed to insert from {0} to mailsendlog".format(sensorId),msgType)
+					emailWarning("Failed to insert from {0} to mailsendlog".format(sensor.tag),msgType)
 
 			# insert values to db
 			try:
-				sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime,sensorId,sensorTemperature)
+				sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s', temperature_f='%s'" % (currentTime,sensor.tag,sensorTemperature,sensorTemperatureF)
 				# This row below sets temperature as fahrenheit instead of celsius. Comment above line and uncomment one below to take changes into use
-				#sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime,sensorId,(sensorTemperatureF)
+				#sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime,sensor.tag,(sensorTemperatureF)
 				databaseHelper(sqlCommand,"Insert")
 
 		   	except:
