@@ -44,29 +44,18 @@ from email.MIMEText import MIMEText
 from w1thermsensor import W1ThermSensor
 
 
-# function for reading DS18B20 sensors is: temp_c, temp_f = DS18B20read.readtemp()
-# function for reading DHT22 sensors
-#def sensorReadings(gpio, sensor):
-#
-#	configurations = getConfigurations()
-#	adafruit = configurations["adafruitpath"]
-#
-#	sensorReadings = subprocess.check_output(['sudo',adafruit,sensor,gpio])
-#
-#	try:
-#		# try to read neagtive numbers
-#		temperature = re.findall(r"Temp=(-\d+.\d+)", sensorReadings)[0]
-#	except:
-#		# if negative numbers caused exception, they are supposed to be positive
-#		try:
-#			temperature = re.findall(r"Temp=(\d+.\d+)", sensorReadings)[0]
-#		except:
-#			pass
-#	humidity = re.findall(r"Humidity=(\d+.\d+)", sensorReadings)[0]
-#	intTemp = float(temperature)
-#	intHumidity = float(humidity)
-#
-#	return intTemp, intHumidity
+# function for converting sensor type name to sensor type numerical designation.
+# Only needed because the w1thermsensor library doesn't let you pass the type
+# name to __init__...
+def getSensorTypeNum(typeString):
+    conversion = {"DS18S20" : 0x10,
+        "DS1822" : 0x22,
+        "DS18B20" : 0x28,
+        "DS1825" : 0x3B,
+        "DS28EA00" : 0x42,
+        "MAX31850K" : 0x3B}
+
+    return conversion[typeString]
 
 # function for getting weekly average temperatures.
 def getWeeklyAverageTemp(sensor):
@@ -246,7 +235,7 @@ def main():
 	configurations = getConfigurations()
 
 	# Sensors
-	sensors = [W1ThermSensor(40,s["id"]) for s in configurations["sensors"]]
+	sensors = [W1ThermSensor(getSensorTypeNum(s["type"]),s["id"]) for s in configurations["sensors"]]
 	for i, s in enumerate(sensors):
 		s.tag = configurations["sensors"][i]["tag"]
         s.id = configurations["sensors"][i]["id"]
