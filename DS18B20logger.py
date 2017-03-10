@@ -298,7 +298,7 @@ def main():
 		try:
 			# only works for DS18B20...add some of the old code back in if you want to mix sensor types
 			sensorTemperature = sensor.get_temperature(sensor.DEGREES_C)
-			sensorTemperatureF = sensor.get_temperature(sensor.DEGREES_F)
+			sensorTemperatureF = sensorTemperature * 1.8 + 32;
 
 			print sensor.tag,"temp:",sensorTemperature,"tempF:",sensorTemperatureF
 			limitsOk,warningMessage = checkLimits(sensor.tag,sensorTemperature,sensor.high_limit,sensor.low_limit)
