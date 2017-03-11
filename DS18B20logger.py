@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2015
+# Copyright (c) 2015
 # Author: Janne Posio
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -42,6 +42,10 @@ from email.MIMEMultipart import MIMEMultipart
 from email.MIMEText import MIMEText
 # import DS18B20read
 from w1thermsensor import W1ThermSensor
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+import numpy as np
 
 
 # function for converting sensor type name to sensor type numerical designation.
@@ -122,6 +126,12 @@ def databaseHelper(sqlCommand,sqloperation):
 			cursor.execute(sqlCommand)
 			data = cursor.fetchone()
   		except:
+			db.rollback()
+	elif sqloperation == "SelectMany":
+		try:
+			cursor.execute(sqlCommand)
+			data = cursor.fetchall()
+		except:
 			db.rollback()
 	elif sqloperation == "Insert":
         	try:
@@ -344,6 +354,18 @@ def main():
 				#sys.exit(0)
 				#don't exit because of for loop
 				print "Database error"
+
+	sqlCommand = "SELECT dateandtime, temperature_f FROM temperaturedata WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
+	data = databaseHelper(sqlCommand,"SelectMany")
+	outtimes = np.array([i[0] for i in data])
+	output = np.array([i[1] for i in data])
+	fig = plt.figure()
+	ax = fig.add_subplot(111)
+	ax.plot(outtimes,output)
+	xfmt = matplotlib.dates.DateFormatter("%H:%M")
+	ax.xaxis.set_major_formatter(xfmt)
+	ax.grid(True)
+	fig.savefig('/var/www/html/test.svg')
 
 if __name__ == "__main__":
 	main()
