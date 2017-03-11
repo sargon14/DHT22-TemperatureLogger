@@ -119,7 +119,7 @@ def databaseHelper(sqlCommand,sqloperation):
     data = ""
 
     db = MySQLdb.connect(host,user,password,database)
-        cursor=db.cursor()
+    cursor=db.cursor()
 
     if sqloperation == "Select":
         try:
