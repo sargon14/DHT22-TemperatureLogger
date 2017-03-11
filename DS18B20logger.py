@@ -125,7 +125,7 @@ def databaseHelper(sqlCommand,sqloperation):
         try:
             cursor.execute(sqlCommand)
             data = cursor.fetchone()
-          except:
+        except:
             db.rollback()
     elif sqloperation == "SelectMany":
         try:
@@ -134,12 +134,12 @@ def databaseHelper(sqlCommand,sqloperation):
         except:
             db.rollback()
     elif sqloperation == "Insert":
-            try:
+        try:
             cursor.execute(sqlCommand)
-                    db.commit()
-            except:
-                    db.rollback()
-                    emailWarning("Database insert failed", "")
+            db.commit()
+        except:
+            db.rollback()
+            emailWarning("Database insert failed", "")
             sys.exit(0)
 
     elif sqloperation == "Backup":
