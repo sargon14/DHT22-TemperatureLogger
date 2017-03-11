@@ -350,7 +350,7 @@ def main():
                 #sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime,sensor.tag,(sensorTemperatureF)
                 databaseHelper(sqlCommand,"Insert")
 
-               except:
+            except:
                 #sys.exit(0)
                 #don't exit because of for loop
                 print "Database error"
