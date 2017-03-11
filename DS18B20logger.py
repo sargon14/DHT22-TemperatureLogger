@@ -176,7 +176,7 @@ def checkWarningLog(sensor, sensortemp):
 
     # If there weren't any entries in database, then it is assumed that this is fresh database and first entry is needed
     if data == None:
-               sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTimeAsString,sensor,"0.0",sensortemp)
+        sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTimeAsString,sensor,"0.0",sensortemp)
         databaseHelper(sqlCommand,"Insert")
         lastLoggedTime = currentTimeAsString
         lastTemperature = sensortemp
