@@ -66,14 +66,14 @@ def getWeeklyAverageTemp(sensor):
 
     weekAverageTemp = ""
 
-    date =     datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+    date = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
     delta = (datetime.date.today() - timedelta(days=7)).strftime("%Y-%m-%d 00:00:00")
 
-        try:
-            sqlCommand = "SELECT AVG(temperature) FROM temperaturedata WHERE dateandtime BETWEEN '%s' AND '%s' AND sensor='%s'" % (delta,date,sensor)
+    try:
+        sqlCommand = "SELECT AVG(temperature) FROM temperaturedata WHERE dateandtime BETWEEN '%s' AND '%s' AND sensor='%s'" % (delta,date,sensor)
         data = databaseHelper(sqlCommand,"Select")
         weekAverageTemp = "%.2f" % data
-       except:
+    except:
         pass
 
     return weekAverageTemp
