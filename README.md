@@ -7,6 +7,12 @@ The DS18B20 is part of a family of temperature sensors that use the OneWire comm
 
 The logger also now creates a graph of the last 12 hours of temperature data, so that it can be displayed on the website (see example below).
 
+## Current Branch Project
+
+Currently, in branch day-night-graph, I'm trying to make the graph prettier by having it show when sunrise and sunset happen. What I want is basically for it to have a shaded background during the nighttime portion of the graph. The simplest way I can think of to do this involves asking for sunrise/sunset times from https://sunrise-sunset.org/. But that means I'll have to convert to my time zone, and that means I need to know if it's daylight savings time or not, which means I need the time zone database from https://timezonedb.com, which means...
+
+...that the graph code is going to be too involved for it to stay just tacked on to the end of main(). So, I'm going to break it out into its own function, that pulls temperature data from the database and makes a graph for an arbitrary datetime interval. It should also probably be able to save the graph .svg to different locations besides /var/www/html.
+
 ## Next steps
 
 This project will be maximally useful once I have more sensors. Specifically, a sensor near the thermostat will be crucial, so that I can compare what the heat thinks it's doing to what it feels like in the rest of the room. But the two locations are too far away to wire up to the same Raspberry Pi, so I may need to set up some sort of satellite microcontroller...
