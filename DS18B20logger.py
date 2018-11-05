@@ -187,16 +187,16 @@ def checkWarningLog(sensor, sensortemp):
     # sql command for selecting last send time for sensor that trigged the
     # warning
     sqlCommand = "select * from mailsendlog where triggedsensor='%s' \
-        and mailsendtime IN (SELECT max(mailsendtime)FROM mailsendlog \
-        where triggedsensor='%s')" % (sensor, sensor)
+    and mailsendtime IN (SELECT max(mailsendtime)FROM mailsendlog \
+    where triggedsensor='%s')" % (sensor, sensor)
     data = databaseHelper(sqlCommand, "Select")
 
     # If there weren't any entries in database, then it is assumed that this
     # is a fresh database and first entry is needed
     if data is None:
         sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', \
-            triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" \
-            % (currentTimeAsString, sensor, "0.0", sensortemp)
+        triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" \
+        % (currentTimeAsString, sensor, "0.0", sensortemp)
         databaseHelper(sqlCommand, "Insert")
         lastLoggedTime = currentTimeAsString
         lastTemperature = sensortemp
@@ -312,25 +312,36 @@ def main():
 
     # check if it is sunday, if yes send connection check on 23.00
     if connectionCheckEnabled:
-        if str(d) == str(connectionCheckDay) and str(h.hour) == str(connectionCheckHour):
+        if str(d) == str(connectionCheckDay) and \
+                str(h.hour) == str(connectionCheckHour):
             for sensor in sensors:
                 okToUpdate = False
                 # For better accuracy, or use mysql timestamp
                 # DEFAULT CURRENT_TIMESTAMP
-                currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                currentTime = datetime.datetime.now().strftime(
+                    "%Y-%m-%d %H:%M:%S")
                 try:
                     sensorWeeklyAverage = getWeeklyAverageTemp(sensor.tag)
-                    if sensorWeeklyAverage is not None and sensorWeeklyAverage != '':
+                    if sensorWeeklyAverage is not None \
+                            and sensorWeeklyAverage != '':
                         checkSensor = sensor.tag + " conchck"
-                        okToUpdate, tempWarning = checkWarningLog(checkSensor, sensorWeeklyAverage)
+                        okToUpdate, tempWarning = checkWarningLog(
+                            checkSensor, sensorWeeklyAverage)
                         if okToUpdate is True:
                             msgType = "Info"
-                            Message = "Connection check. Weekly average from {0} is {1}".format(sensor.tag, sensorWeeklyAverage)
+                            Message = "Connection check. Weekly average from \
+                            {0} is {1}".format(sensor.tag, sensorWeeklyAverage)
                             emailWarning(Message, msgType)
-                            sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTime, checkSensor, sensor.low_limit, sensorWeeklyAverage)
+                            sqlCommand = "INSERT INTO mailsendlog SET \
+                            mailsendtime='%s', triggedsensor='%s', \
+                            triggedlimit='%s' ,lasttemperature='%s'"\
+                            % (currentTime, checkSensor, sensor.low_limit,
+                               sensorWeeklyAverage)
                             databaseHelper(sqlCommand, "Insert")
                 except:
-                    emailWarning("Couldn't get average temperature to sensor: {0} from current week".format(sensor.tag), msgType)
+                    emailWarning(
+                        "Couldn't get average temperature to sensor: {0} from \
+                        current week".format(sensor.tag), msgType)
                     pass
 
     # default message type to send as email. DO NOT CHANGE
@@ -348,8 +359,11 @@ def main():
             sensorTemperature = sensor.get_temperature(sensor.DEGREES_C)
             sensorTemperatureF = sensorTemperature * 1.8 + 32
 
-            print sensor.tag, "temp:", sensorTemperature, "tempF:", sensorTemperatureF
-            limitsOk, warningMessage = checkLimits(sensor.tag, sensorTemperature, sensor.high_limit, sensor.low_limit)
+            print sensor.tag, "temp:", sensorTemperature, \
+                "tempF:", sensorTemperatureF
+            limitsOk, warningMessage = checkLimits(
+                sensor.tag, sensorTemperature,
+                sensor.high_limit, sensor.low_limit)
         except:
             print sensor.tag, "failed to read"
             emailWarning("Failed to read {0} sensor".format(sensor.tag),
@@ -362,13 +376,14 @@ def main():
                 # if limits were trigged
                 if not limitsOk:
                     # check log when was last warning sended
-                    okToUpdate, tempWarning = checkWarningLog(sensor.tag,
-                                                              sensorTemperature)
+                    okToUpdate, tempWarning = checkWarningLog(
+                        sensor.tag, sensorTemperature)
             except:
                 # if limits were triggered but something caused error,
                 # send warning mail to indicate this
-                emailWarning("Failed to check/insert log entry from \
-                    mailsendlog. Sensor: {0}".format(sensor.tag), msgType)
+                emailWarning(
+                    "Failed to check/insert log entry from mailsendlog. \
+                    Sensor: {0}".format(sensor.tag), msgType)
                 sys.exit(0)
 
             if okToUpdate:
@@ -379,13 +394,13 @@ def main():
                 emailWarning(warningMessage, msgType)
                 try:
                     # Insert line to database to indicate when warning was sent
-                    currentTime = datetime.datetime.now().strftime("%Y-%m-%d \
-                                                                   %H:%M:%S")
+                    currentTime = datetime.datetime.now().strftime(
+                        "%Y-%m-%d %H:%M:%S")
                     sqlCommand = "INSERT INTO mailsendlog SET mailsendtime=\
-                        '%s', triggedsensor='%s', triggedlimit='%s' ,\
-                        lasttemperature='%s'" % \
-                        (currentTime, sensor.tag, sensor.low_limit,
-                         sensorTemperature)
+                    '%s', triggedsensor='%s', triggedlimit='%s' ,\
+                    lasttemperature='%s'"\
+                        % (currentTime, sensor.tag, sensor.low_limit,
+                           sensorTemperature)
                     databaseHelper(sqlCommand, "Insert")
                 except:
                     # if database insert failed, send warning to indicate that
@@ -396,8 +411,8 @@ def main():
             # insert values to db
             try:
                 sqlCommand = "INSERT INTO temperaturedata SET \
-                    dateandtime='%s', sensor='%s', temperature='%s', \
-                    temperature_f='%s'" % \
+                dateandtime='%s', sensor='%s', temperature='%s', \
+                temperature_f='%s'" % \
                     (currentTime, sensor.tag, sensorTemperature,
                      sensorTemperatureF)
                 # This row below sets temperature as fahrenheit instead of
@@ -414,7 +429,7 @@ def main():
                 print "Database error"
 
     sqlCommand = "SELECT dateandtime, temperature_f FROM temperaturedata \
-        WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
+    WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
     data = databaseHelper(sqlCommand, "SelectMany")
     outtimes = np.array([i[0] for i in data])
     output = np.array([i[1] for i in data])
