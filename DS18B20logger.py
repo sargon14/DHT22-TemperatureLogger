@@ -8,8 +8,8 @@
 # copies of the Software, and to permit persons to whom the Software is
 # furnished to do so, subject to the following conditions:
 
-# The above copyright notice and this permission notice shall be included in all
-# copies or substantial portions of the Software.
+# The above copyright notice and this permission notice shall be included in
+# all copies or substantial portions of the Software.
 
 # THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
 # IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
@@ -19,11 +19,11 @@
 # OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 # SOFTWARE
 
-# This script is intended to use with Adafruit DHT22 temperature and humidity sensors
-# and with sensor libraries that Adafruit provides for them. This script alone, without
-# sensor/s to provide data for it doesn't really do anyting useful.
-# For guidance how to create your own temperature logger that makes use of this script,
-# Adafruit DHT22 sensors and raspberry pi, visit :
+# This script is intended to use with Adafruit DHT22 temperature and humidity
+# sensors and with sensor libraries that Adafruit provides for them. This
+# script alone, without sensor/s to provide data for it doesn't really do
+# anything useful. For guidance how to create your own temperature logger that
+# makes use of this script, Adafruit DHT22 sensors and raspberry pi, visit :
 # http://www.instructables.com/id/Raspberry-PI-and-DHT22-temperature-and-humidity-lo/
 
 # !/usr/bin/python2
@@ -249,7 +249,9 @@ def checkLimits(sensor, sensorTemperature, sensorhighlimit, sensorlowlimit):
 
     # check temperature measurements against limits
     if float(sensorTemperature) < float(sensorlowlimit):
-        warningmsg = "Temperature low on sensor: {0}\nTemperature: {1}\nTemperature limit: {2}".format(sensor, sensorTemperature, sensorlowlimit)
+        warningmsg = "Temperature low on sensor: {0}\nTemperature: {1}\n\
+        Temperature limit: {2}".format(sensor, sensorTemperature,
+                                       sensorlowlimit)
         check = False
     elif float(sensorTemperature) > float(sensorhighlimit):
         warningmsg = "Temperature high on sensor: {0}\nTemperature: {1}\n\
@@ -350,7 +352,8 @@ def main():
             limitsOk, warningMessage = checkLimits(sensor.tag, sensorTemperature, sensor.high_limit, sensor.low_limit)
         except:
             print sensor.tag, "failed to read"
-            emailWarning("Failed to read {0} sensor".format(sensor.tag), msgType)
+            emailWarning("Failed to read {0} sensor".format(sensor.tag),
+                         msgType)
             sensorError = True
             pass
 
@@ -359,11 +362,13 @@ def main():
                 # if limits were trigged
                 if not limitsOk:
                     # check log when was last warning sended
-                    okToUpdate, tempWarning = checkWarningLog(sensor.tag, sensorTemperature)
+                    okToUpdate, tempWarning = checkWarningLog(sensor.tag,
+                                                              sensorTemperature)
             except:
                 # if limits were triggered but something caused error,
                 # send warning mail to indicate this
-                emailWarning("Failed to check/insert log entry from mailsendlog. Sensor: {0}".format(sensor.tag), msgType)
+                emailWarning("Failed to check/insert log entry from \
+                    mailsendlog. Sensor: {0}".format(sensor.tag), msgType)
                 sys.exit(0)
 
             if okToUpdate:
@@ -374,21 +379,33 @@ def main():
                 emailWarning(warningMessage, msgType)
                 try:
                     # Insert line to database to indicate when warning was sent
-                    currentTime = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-                    sqlCommand = "INSERT INTO mailsendlog SET mailsendtime='%s', triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" % (currentTime, sensor.tag, sensor.low_limit, sensorTemperature)
+                    currentTime = datetime.datetime.now().strftime("%Y-%m-%d \
+                                                                   %H:%M:%S")
+                    sqlCommand = "INSERT INTO mailsendlog SET mailsendtime=\
+                        '%s', triggedsensor='%s', triggedlimit='%s' ,\
+                        lasttemperature='%s'" % \
+                        (currentTime, sensor.tag, sensor.low_limit,
+                         sensorTemperature)
                     databaseHelper(sqlCommand, "Insert")
                 except:
                     # if database insert failed, send warning to indicate that
                     # there is some issues with database
-                    emailWarning("Failed to insert from {0} to mailsendlog".format(sensor.tag), msgType)
+                    emailWarning("Failed to insert from {0} to mailsendlog"
+                                 .format(sensor.tag), msgType)
 
             # insert values to db
             try:
-                sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s', temperature_f='%s'" % (currentTime, sensor.tag, sensorTemperature, sensorTemperatureF)
+                sqlCommand = "INSERT INTO temperaturedata SET \
+                    dateandtime='%s', sensor='%s', temperature='%s', \
+                    temperature_f='%s'" % \
+                    (currentTime, sensor.tag, sensorTemperature,
+                     sensorTemperatureF)
                 # This row below sets temperature as fahrenheit instead of
                 # celsius. Comment above line and uncomment one below to take
                 # changes into use
-                # sqlCommand = "INSERT INTO temperaturedata SET dateandtime='%s', sensor='%s', temperature='%s'" % (currentTime, sensor.tag, sensorTemperatureF)
+                # sqlCommand = "INSERT INTO temperaturedata SET \
+                #    dateandtime='%s', sensor='%s', temperature='%s'" % \
+                #    (currentTime, sensor.tag, sensorTemperatureF)
                 databaseHelper(sqlCommand, "Insert")
 
             except:
@@ -396,7 +413,8 @@ def main():
                 # don't exit because of for loop
                 print "Database error"
 
-    sqlCommand = "SELECT dateandtime, temperature_f FROM temperaturedata WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
+    sqlCommand = "SELECT dateandtime, temperature_f FROM temperaturedata \
+        WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
     data = databaseHelper(sqlCommand, "SelectMany")
     outtimes = np.array([i[0] for i in data])
     output = np.array([i[1] for i in data])
