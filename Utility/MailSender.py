@@ -10,8 +10,8 @@ import logging
 
 
 class MailSender():
-    ' Sends emails. Either warning or weekly averages in order to see that pi \
-    is alive. Currently supports only gmail '
+    '''Sends emails. Either warning or weekly averages in order to see that pi
+    is alive. Currently supports only gmail'''
 
     def __init__(self, configurations, dbController):
         self.logger = logging.getLogger(__name__)
@@ -38,10 +38,10 @@ class MailSender():
 
         self.logger.info("MailSender instantiation finished")
 
-    ' Function for sending informational mail e.g. weekly averages. Pass in \
-    trigger to indicate what was trigger event e.g. Averages when weekly \
-    averages are being sent'
     def sendInformationalEmail(self, msgContent, trigger):
+        '''Function for sending informational mail e.g. weekly averages.
+        Pass in trigger to indicate what was trigger event e.g. Averages when
+        weekly averages are being sent'''
         self.logger.info("sendInformationalEmail called for: %s", trigger)
 
         # Message to be sended with subject field
@@ -64,8 +64,9 @@ class MailSender():
                 'Failed to set mail sent time to database\n', exc_info=True)
             raise
 
-    ' Function for sending warning email '
     def sendWarningEmail(self, msgContent):
+        '''Function for sending warning email'''
+
         self.logger.info("sendWarningEmail called")
 
         # Message to be sended with subject field
@@ -78,8 +79,9 @@ class MailSender():
             self.logger.error('Failed to send mail\n', exc_info=True)
             raise
 
-    ' Function for sending SENSOR warning email '
     def sendSensorWarningEmail(self, msgContent, sensor, sensorData):
+        '''Function for sending SENSOR warning email'''
+
         self.logger.info("sendSensorWarningEmail called")
 
         # Message to be sended with subject field
@@ -106,8 +108,9 @@ class MailSender():
                 'Failed to set mail sent time to database\n', exc_info=True)
             raise
 
-    ' Private function for sending emails '
     def _sendMail(self, message):
+        '''Private function for sending emails'''
+
         self.logger.info("_sendMail called. Sending mail...")
 
         # The actual mail sending
@@ -121,10 +124,10 @@ class MailSender():
 
         return True
 
-    ' Function for checking if mail sending is on timeout. Means that enough \
-    time has not passed sice last mail was sent. Check json.config \
-    mailSendingTimeoutInFullHours '
     def checkMailTimeout(self, lastMailSentTime):
+        '''Function for checking if mail sending is on timeout. Means that
+        enough time has not passed sice last mail was sent. Check json.config
+        mailSendingTimeoutInFullHours'''
 
         self.logger.info("checkMailTimeout called.")
 
@@ -163,8 +166,9 @@ class MailSender():
             self.logger.warning("Timeout set to 0, mail is sent every time.")
             return True
 
-    ' Private function used for getting date time in required form '
     def _getDateTimeString(self):
+        '''Private function used for getting date time in required form'''
+
         try:
             return self.timeFormatHelper.getDateTimeStringFromDateTimeObject(
                 datetime.now(), "%Y-%m-%d %H:%M:%S")

@@ -5,8 +5,7 @@ import subprocess
 
 
 class Logger:
-
-    ' Logger class holds logger configurations'
+    '''Logger class holds logger configurations'''
 
     def __init__(self):
 

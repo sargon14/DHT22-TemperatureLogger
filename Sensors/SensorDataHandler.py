@@ -6,9 +6,9 @@ from Utility.MeasurementCompare import MeasurementCompare
 
 
 class SensorDataHandler():
-    ' Class for handling Sensors and data gathered from sensors. Reads data, \
-    persists it to database and performs comparisons to see if temperature or \
-    humidity has changed more than set threshold allows'
+    ''' Class for handling Sensors and data gathered from sensors. Reads data,
+    persists it to database and performs comparisons to see if temperature or
+    humidity has changed more than set threshold allows'''
 
     def __init__(self, configurations, dbControl, mailSender):
         self.logger = logging.getLogger(__name__)
@@ -29,7 +29,7 @@ class SensorDataHandler():
         self.logger.info("SensorDataHandler instantiated")
 
     def readAndStoreSensorReadings(self):
-        # Store sensor temp and humidity readings with other relevant data
+        '''Store sensor temp and humidity readings with other relevant data'''
         try:
             self.readingsFromSensors, self.failedSensors = \
                 self.sensorReader.getSensorReadings()
@@ -122,8 +122,8 @@ class SensorDataHandler():
 
         return
 
-    ' Private function for persisting sensor data to database'
     def _persistSensorData(self):
+        '''Private function for persisting sensor data to database'''
         # Check that there is values in readingsFromSensors collections
         # and add into database
         for key, value in self.readingsFromSensors.iteritems():
@@ -141,10 +141,10 @@ class SensorDataHandler():
             self.logger.info("Data persisting finished for sensor %s", key)
         self.logger.info("Data persisted")
 
-    ' Compare current and last measurement against set threshold. \
-    Note that this will ignore time when last one was sent, it will send mail \
-    always when set threshold is exceeded'
     def _measurementCompareAgainstSetThreshold(self):
+        '''Compare current and last measurement against set threshold. Note
+        that this will ignore time when last one was sent, it will send mail
+        always when set threshold is exceeded.'''
 
         # Set send warning flag to false by default
         sendWarning = False
@@ -200,8 +200,8 @@ class SensorDataHandler():
                 temperature or humidity. Nothing to compare to')
             self.logger.info('Threshold comparison done for sensor %s', key)
 
-    ' Compare measured temperature and humidity with set trigger limits '
     def _compareReadValuesWithSetLimits(self):
+        '''Compare measured temperature and humidity with set trigger limits'''
 
         for key, value in self.readingsFromSensors.iteritems():
             self.logger.info('Perform delta check compare against previously \

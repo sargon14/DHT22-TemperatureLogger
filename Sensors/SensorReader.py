@@ -9,8 +9,13 @@ from Utility.TemperatureConverter import TemperatureConverter
 # subprocess in _getSensorReadings?
 
 
+class DS18B20SensorReader():
+    '''Class for reading DS18B20 sensors.
+    Will replace the DHT22 code eventually'''
+
+
 class SensorReader():
-    'Class for reading DHT22 sensors'
+    '''Class for reading DHT22 sensors'''
 
     def __init__(self, configurations, dbControl):
         self.logger = logging.getLogger(__name__)
@@ -26,9 +31,8 @@ class SensorReader():
 
         self.logger.info("SensorReader instantiated")
 
-    ' Function for reading data from sensors and collecting it '
     def getSensorReadings(self):
-
+        '''Function for reading data from sensors and collecting it'''
         # Empty list to gather sensor provided readings
         readingsFromSensors = {}
 
@@ -158,10 +162,9 @@ class SensorReader():
         self.logger.info('Sensor readings collected')
         return readingsFromSensors, failedSensors
 
-    ' Private function for reading sensor data. Needs sensor type e.g. 22 and \
-    gpio where it is attached in RPI'
     def _getSensorReadings(self, sensorType, gpio):
-
+        '''Private function for reading sensor data. Needs sensor type e.g. 22
+        and gpio where it is attached in RPI'''
         self.logger.info(
             "Start reading values for sensor type {0} in gpio {1}"
             .format(sensorType, gpio))

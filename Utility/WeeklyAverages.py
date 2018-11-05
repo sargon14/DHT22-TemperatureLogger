@@ -15,8 +15,9 @@ class WeeklyAverages():
 
         self.logger.info("WeeklyAverages instantiation finished")
 
-    ' Function for performing weekly averages mail sending '
     def performWeeklyAverageMailSending(self):
+        '''Function for performing weekly averages mail sending'''
+
         self.logger.info(
             "Get weekly averages and check when last mail was sent")
 

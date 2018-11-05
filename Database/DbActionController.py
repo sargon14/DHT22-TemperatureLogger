@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from datetime import timedelta
-from DbActions import DbActions
+from Database.DbActions import DbActions
 
 
 class DbController():
@@ -19,8 +19,9 @@ class DbController():
 
         self.logger.info("DbController instantiated")
 
-    ' Fn for checking log for when last warning mail was sent for given sensor'
     def getLastSensorMailSentTime(self, sensor):
+        '''Function for checking log for when last warning mail was sent
+        for a given sensor'''
         self.logger.info("getLastSensorMailSentTime")
 
         # Sql query to execute
@@ -32,9 +33,9 @@ class DbController():
         data = self.dbActions.sqlSelect(sqlQuery)
         return data
 
-    'Function for setting time when mail warning was sent for sensor'
     def setLastSensorMailSentTime(self, sensor, sendingTime, humidity,
                                   temperature):
+        '''Function for setting time when mail warning was sent for sensor'''
         self.logger.info("setLastSensorMailSentTime")
 
         # Check if humidity was provided for the sensor, if not set it to zero
@@ -57,8 +58,9 @@ class DbController():
         self.dbActions.sqlInsert(sqlQuery)
         return
 
-    ' Function for reading last time when mail was sended to spesific sensor '
     def getLastMailSentTime(self, action):
+        '''Function for reading last time when mail was sent to
+        specific sensor'''
         self.logger.info("getLastMailSentTime")
 
         # Sql query to be executed
@@ -69,10 +71,10 @@ class DbController():
         data = self.dbActions.sqlSelect(sqlQuery)
         return data
 
-    'Function for setting time when last general mail was sent. \
-    Action is used to indicate what kind of action it was e.g. \
-    for averages sending it is Averages'
     def setLastMailSentTime(self, timestamp, action):
+        '''Function for setting time when last general mail was sent. Action
+        is used to indicate what kind of action it was e.g. for averages
+        sending it is Averages'''
         self.logger.info("Set mail sent time to log")
 
         # Sql query to be executed
@@ -84,8 +86,9 @@ class DbController():
         self.dbActions.sqlInsert(sqlQuery)
         return
 
-    ' Function for reading last persisted measurements sensor has provided'
     def getLastSensorMeasurements(self, sensor):
+        '''Function for reading last persisted measurements
+        sensor has provided'''
         self.logger.info('Start reading last sensor measurements')
 
         # Sql query to be executed
@@ -97,8 +100,9 @@ class DbController():
         sensorData = self.dbActions.sqlSelect(sqlQuery)
         return sensorData
 
-    ' Function for fetching average of weekly temps persisted for the sensor'
     def getWeeklyAverageTemp(self, sensor):
+        '''Function for fetching average of weekly temps persisted
+        for the sensor'''
 
         self.logger.info("Starting to read sensor weekly average temperatures")
         weekAverageTemp = ""
@@ -129,8 +133,9 @@ class DbController():
         # Return sensors weekly average
         return weekAverageTemp
 
-    ' Function for reading weekly average humidity persisted for the sensor'
     def getWeeklyAverageHumidity(self, sensor):
+        '''Function for reading weekly average humidity persisted for
+        the sensor'''
 
         self.logger.info("Starting to read sensor weekly average humidity")
         weekAverageHumidity = ""
@@ -153,8 +158,8 @@ class DbController():
         # Return sensors weekly average
         return weekAverageHumidity
 
-    ' Function for persisiting temperature and humidity for the sensor'
     def setSensorTemperatureAndHumidityToDb(self, sensor, sensorData):
+        '''Function for persisting temperature and humidity for the sensor'''
 
         self.logger.info("Starting to persist sensor readings to database")
 
@@ -174,8 +179,9 @@ class DbController():
         except:
             raise
 
-    ' Function for backup dump creation '
     def createSqlBackupDump(self):
+        '''Function for backup dump creation'''
+
         try:
             # Call dbactions sqlBackup function
             self.dbActions.sqlBackup()

@@ -3,8 +3,8 @@ import logging
 
 
 class ConfigAdapter():
-    'Adaptation class that can be used to get different adaptations from full \
-    configuration read from json.config.'
+    '''Adaptation class that can be used to get different adaptations from
+    full configuration read from json.config.'''
 
     def __init__(self, configurations):
         self.logger = logging.getLogger(__name__)

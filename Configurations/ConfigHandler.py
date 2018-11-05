@@ -5,8 +5,7 @@ from Configurations.ConfigAdapter import ConfigAdapter
 
 
 class ConfigHandler():
-
-    ' Class for handling configurations set in config.json '
+    '''Class for handling configurations set in config.json'''
 
     def __init__(self):
         self.logger = logging.getLogger(__name__)
@@ -42,8 +41,8 @@ class ConfigHandler():
 
         self.logger.info("ConfigHandler instantiated")
 
-    ' Get full configuration dictionary and return it to '
     def getFullConfiguration(self):
+        '''Get full configuration dictionary and return it to'''
         self.logger.info("Get full configuration adaptation")
         try:
             return self.ConfigAdapter.getAdaptedFullConfig()
@@ -51,10 +50,9 @@ class ConfigHandler():
             self.logger.error("Configuration adaptation failed\n")
             raise
 
-    ' Check if backup dump is enabled in configurations and check if it is \
-    time to perform the dump '
     def isBackupDumpConfigEnabled(self):
-
+        '''Check if backup dump is enabled in configurations and check if it is
+        time to perform the dump'''
         # Set exectue flag to false to begin with
         execute = False
 
@@ -77,9 +75,8 @@ class ConfigHandler():
             self.logger.info("No")
         return execute
 
-    ' Check if weekly averages sending is enabled '
     def isWeeklyAveragesConfigEnabled(self):
-
+        '''Check if weekly averages sending is enabled'''
         # Flag to false
         execute = False
 
@@ -102,9 +99,9 @@ class ConfigHandler():
             self.logger.info("No")
         return execute
 
-    ' Private function for comparing current date and time to config-provided \
-    date and time '
     def _isItTimeToperform(self, setDay, setHour, currentDate, currentTime):
+        '''Private function for comparing current date and time to
+        config-provided date and time'''
         self.logger.info("Is it time to perform requested action")
 
         if (str(setDay) == "0" or str(currentDate) == str(setDay))\

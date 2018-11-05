@@ -1,14 +1,15 @@
-import MySQLdb
 import os
+import pymysql
 import logging
 import subprocess
 
-# TODO MySqldb.connect is done separately in each function.
+# TODO pymysql.connect is done separately in each function.
 # Check if reasonable to do once in init
 
 
 class DbActions():
-    'Helper function for database actions. Handles select, insert and sql dump'
+    '''Helper function for database actions.
+    Handles select, insert and sql dump'''
 
     def __init__(self, configurations):
         self.logger = logging.getLogger(__name__)
@@ -25,12 +26,12 @@ class DbActions():
 
         self.logger.info("DBActions instantiated")
 
-    ' Select function '
     def sqlSelect(self, sqlQuery):
+        '''Select function'''
         self.logger.info('Executing Sql SELECT')
 
         # Connect to db
-        db = MySQLdb.connect(self.host, self.user, self.password,
+        db = pymysql.connect(self.host, self.user, self.password,
                              self.database)
         cursor = db.cursor()
 
@@ -45,12 +46,13 @@ class DbActions():
         self.logger.info("Executing Sql SELECT finished")
         return data
 
-    ' Insert function '
     def sqlInsert(self, sqlQuery):
+        '''Insert function'''
+
         self.logger.info('Executing Sql INSERT')
 
         # Connect to db
-        db = MySQLdb.connect(self.host, self.user, self.password,
+        db = pymysql.connect(self.host, self.user, self.password,
                              self.database)
         cursor = db.cursor()
 
@@ -65,8 +67,8 @@ class DbActions():
 
         self.logger.info("Executing Sql INSERT finished")
 
-    ' Function for sql backup '
     def sqlBackup(self):
+        '''Function for sql backup'''
         self.logger.info("Sql backup dump execution started")
 
         # Set dumpPath to variable for easier reference

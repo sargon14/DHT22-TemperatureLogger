@@ -51,10 +51,10 @@ class MeasurementCompare():
 
         self.logger.info("Data set")
 
-    ' Function for comparing measured temperature against limits set for the \
-    sensor in config.json. Data need to be set with setSensorData \
-    before calling this function '
     def checkTemperatureLimits(self):
+        '''Function for comparing measured temperature against limits set for
+        the sensor in config.json. Data need to be set with setSensorData
+        before calling this function.'''
 
         self.logger.info("Comparing measured temperature against set limit")
 
@@ -91,11 +91,10 @@ class MeasurementCompare():
         self.logger.info("Comparison done")
         return self.betweenLimits, self.limitCheckWarningMsg
 
-    ' Function for comparing measured humidity against limits set for the \
-    sensor in config.json. Data need to be set with setSensorData before \
-    calling this function '
     def checkHumidityLimits(self):
-
+        '''Function for comparing measured humidity against limits set for the
+        sensor in config.json. Data need to be set with setSensorData before
+        calling this function'''
         self.logger.info("Comparing measured humidity against set limit")
 
         # check humidity measurements against limits
@@ -124,9 +123,10 @@ class MeasurementCompare():
         self.logger.info("Comparison done")
         return self.betweenLimits, self.limitCheckWarningMsg
 
-    ' Function for checking temperature change. Compares current and last \
-    measurement agains set threshold  '
     def checkTemperatureChange(self):
+        '''Function for checking temperature change. Compares current and last
+        measurement agains set threshold'''
+
         self.logger.info("Comparing temperature change against set threshold")
 
         # Set measurement unit as celsius degrees by default
@@ -191,9 +191,9 @@ class MeasurementCompare():
         self.logger.info("Comparison done")
         return self.sendWarning, self.warningMsg
 
-    '  Function for checking humidity change. Compares current and last \
-    measurement agains set threshold '
     def checkHumidityChange(self):
+        '''Function for checking humidity change. Compares current and last
+        measurement agains set threshold'''
 
         self.logger.info("Comparing humidity change against set threshold")
 
@@ -253,8 +253,8 @@ class MeasurementCompare():
         self.logger.info("Comparison done")
         return self.sendWarning, self.warningMsg
 
-    ' Private function to check if value is float or not'
     def _isFloat(self, valueToCheck):
+        '''Private function to check if value is float or not'''
         try:
             float(valueToCheck)
             return True
