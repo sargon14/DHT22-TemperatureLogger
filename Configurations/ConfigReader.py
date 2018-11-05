@@ -3,10 +3,11 @@ import sys
 import json
 import logging
 
+
 class ConfigReader():
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)  
+        self.logger = logging.getLogger(__name__)
         self.logger.info("ConfigReader instantiation started")
 
         # get path from where code was executed
@@ -20,9 +21,9 @@ class ConfigReader():
             self.configurations = json.loads(open(configurationFile).read())
         except:
             raise
-                
+
         self.logger.info("ConfigReader instantiated")
- 
-    # Get full configurations that was read during instantiation of ConfigReader
-    def getFullConfigurations(self):    
+
+    # Get full configs that were read during instantiation of ConfigReader
+    def getFullConfigurations(self):
         return self.configurations

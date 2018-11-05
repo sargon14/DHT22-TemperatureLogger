@@ -3,12 +3,13 @@ import logging
 from Configurations.ConfigReader import ConfigReader
 from Configurations.ConfigAdapter import ConfigAdapter
 
+
 class ConfigHandler():
 
     ' Class for handling configurations set in config.json '
 
     def __init__(self):
-        self.logger = logging.getLogger(__name__)  
+        self.logger = logging.getLogger(__name__)
         self.logger.info("ConfigHandler instantiation started")
 
         # Instantiate config reader for reading config.json
@@ -19,7 +20,8 @@ class ConfigHandler():
             self.logger.error('Instantiation failed')
             raise
 
-        # Use getFullConfigurations method to fetch configuration set read during configreader instantiation
+        # Use getFullConfigurations method to fetch configuration set read
+        # during configreader instantiation
         try:
             self.logger.info('Read configurations')
             self.fullConfigurations = self.configReader.getFullConfigurations()
@@ -28,7 +30,8 @@ class ConfigHandler():
             self.logger.error("Configuration reading failed")
             raise
 
-        # Check that configuration is not empty and instantiate configuration adapter with configuration data
+        # Check that configuration is not empty and instantiate configuration
+        # adapter with configuration data
         if self.fullConfigurations is None:
             raise Exception("Read configuration set is empty")
         try:
@@ -38,7 +41,7 @@ class ConfigHandler():
             raise
 
         self.logger.info("ConfigHandler instantiated")
- 
+
     ' Get full configuration dictionary and return it to '
     def getFullConfiguration(self):
         self.logger.info("Get full configuration adaptation")
@@ -48,7 +51,8 @@ class ConfigHandler():
             self.logger.error("Configuration adaptation failed\n")
             raise
 
-    ' Check if backup dump is enabled in configurations and check if it is time to perform the dump '
+    ' Check if backup dump is enabled in configurations and check if it is \
+    time to perform the dump '
     def isBackupDumpConfigEnabled(self):
 
         # Set exectue flag to false to begin with
@@ -66,14 +70,16 @@ class ConfigHandler():
         if dumpEnabled.lower() == "y":
             self.logger.info("Yes")
             # Check if it is time to perform dump
-            execute = self._isItTimeToperform(backupDay,backupHour,dumpConfig["dayOfTheWeek"],dumpConfig["currentTime"])
+            execute = self._isItTimeToperform(backupDay, backupHour,
+                                              dumpConfig["dayOfTheWeek"],
+                                              dumpConfig["currentTime"])
         else:
-		 	self.logger.info("No")
+            self.logger.info("No")
         return execute
-    
+
     ' Check if weekly averages sending is enabled '
     def isWeeklyAveragesConfigEnabled(self):
-        
+
         # Flag to false
         execute = False
 
@@ -89,18 +95,22 @@ class ConfigHandler():
         if sendingEnabled.lower() == "y":
             self.logger.info("Yes")
             # Check if it is time to perform averages sending
-            execute = self._isItTimeToperform(sendingDay,sendingHour,averagesSendingConfig["dayOfTheWeek"],averagesSendingConfig["currentTime"])      
+            execute = self._isItTimeToperform(sendingDay, sendingHour,
+                                              averagesSendingConfig["dayOfTheWeek"],
+                                              averagesSendingConfig["currentTime"])
         else:
             self.logger.info("No")
         return execute
 
-    ' Private function for comparing current date and time for configuration provided date and time '
-    def _isItTimeToperform(self,setDay,setHour,currentDate,currentTime):
+    ' Private function for comparing current date and time to config-provided \
+    date and time '
+    def _isItTimeToperform(self, setDay, setHour, currentDate, currentTime):
         self.logger.info("Is it time to perform requested action")
 
-        if (str(setDay) == "0" or str(currentDate) == str(setDay)) and str(currentTime.hour) == str(setHour):
-			self.logger.info("Yes")
-			return True
+        if (str(setDay) == "0" or str(currentDate) == str(setDay))\
+                and str(currentTime.hour) == str(setHour):
+            self.logger.info("Yes")
+            return True
         else:
             self.logger.info("No")
             return
