@@ -23,14 +23,18 @@
 		"subjectmessage":"Info from temperature logger",
 		"subjectwarning":"Warning from temperature logger"
 	},
-	"sqlBackupDump":{
-		"backupDumpEnabled":true,
-		"backupHour":"23"
-	},
-	"connectionCheck":{
-		"connectionCheckEnabled":true,
-		"connectionCheckDay":"5",
-		"connectionCheckHour":"23"
-	},
-	"sqlbackuppath":"/home/pi/DS18B20-TemperatureLogger/Backups/"
+	"sqlBackupDump":[{
+		"backupDumpEnabled":"y",
+		"backupDay":"1",
+		"backupHour":"23",
+		"backupDumpPath":"/home/pi/DS18B20-TemperatureLogger/Backups/"
+	}],
+	"weeklyAverages":[{
+		"weeklyAverageSendingEnabled":"y",
+		"weekDayForSendingAverages":"1",
+		"hourOfTheDayForSendingAverages":"23"
+		}],
+		"useFahrenheits":"y",
+		"mailSendingTimeoutInFullHours":"1",
+		"adafruitPath":"/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py"
 }
