@@ -29,8 +29,8 @@ class ConfigAdapter():
             backupDumpConfig=self.configuration["sqlBackupDump"],
             averagesSendingConfig=self.configuration["weeklyAverages"],
             useFahrenheitsConfig=self.configuration["useFahrenheits"],
-            mailSendingTimeout=self.configuration["mailSendingTimeoutInFullHours"],
-            adafruitPathConfig=self.configuration["adafruitPath"])
+            mailSendingTimeout=self.configuration["mailSendingTimeoutInFullHours"])
+        # adafruitPathConfig=self.configuration["adafruitPath"])
 
         self.logger.info("Configuration dictionary created")
 

@@ -3,6 +3,7 @@ import logging
 # Utility.TemperatureConverter import TemperatureConverter
 
 
+# TODO: fix/remove/something the humidity parts?
 class MeasurementCompare():
 
     def __init__(self, configurations):

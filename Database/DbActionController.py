@@ -21,7 +21,8 @@ class DbController():
 
     def getLastSensorMailSentTime(self, sensor):
         '''Function for checking log for when last warning mail was sent
-        for a given sensor'''
+        for a given sensor. This function seems to return an entire record,
+        whereas getLastMailSentTime just returns the time part...'''
         self.logger.info("getLastSensorMailSentTime")
 
         # Sql query to execute
@@ -50,9 +51,11 @@ class DbController():
             sendingTime = self.currentTimeAsString
 
         # SQL insert to execute
+        # TODO: there seems to be an error here, why is "humidity" being
+        # inserted in the triggedlimit field?
         sqlQuery = "INSERT INTO mailsendlog SET mailsendtime='%s', \
-            triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" \
-            % (sendingTime, sensor, humidity, temperature)
+        triggedsensor='%s', triggedlimit='%s' ,lasttemperature='%s'" \
+        % (sendingTime, sensor, humidity, temperature)
 
         # Execute and return
         self.dbActions.sqlInsert(sqlQuery)
@@ -60,12 +63,13 @@ class DbController():
 
     def getLastMailSentTime(self, action):
         '''Function for reading last time when mail was sent to
-        specific sensor'''
+        specific sensor. This function seems to return just the time, whereas
+        getLastSensorMailSentTime returns the entire record...'''
         self.logger.info("getLastMailSentTime")
 
         # Sql query to be executed
         sqlQuery = "SELECT MAX(mailsendtime) FROM mailsendlog WHERE \
-            triggedsensor ='%s'" % (action)
+        triggedsensor ='%s'" % (action)
 
         # Execute and return data
         data = self.dbActions.sqlSelect(sqlQuery)
@@ -160,7 +164,7 @@ class DbController():
 
     def setSensorTemperatureAndHumidityToDb(self, sensor, sensorData):
         '''Function for persisting temperature and humidity for the sensor'''
-
+        # TODO: Remove humidity, or maybe add a column to the database for it
         self.logger.info("Starting to persist sensor readings to database")
 
         # Temperature and humidity to variables for better handling and

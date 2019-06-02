@@ -145,6 +145,7 @@ class SensorDataHandler():
         '''Compare current and last measurement against set threshold. Note
         that this will ignore time when last one was sent, it will send mail
         always when set threshold is exceeded.'''
+        # TODO: fix/remove/something the humidity parts
 
         # Set send warning flag to false by default
         sendWarning = False

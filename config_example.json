@@ -7,14 +7,15 @@
 	},
 	"sensors":[
 		{
-		"tag":"Couch",
-		"type":"DS18B20",
+		"name":"Couch",
+		"sensorType":"DS18B20",
 		"id":"000008a905f8",
-		"low_limit":"10",
-		"high_limit":"27"
+		"temperatureLowLimit":"10",
+		"temperatureHighLimit":"27",
+		"temperatureThreshold":"5"
 		}
 	],
-	"mailinfo":{
+	"mailInfo":{
 		"enabled":false,
 		"from_address":"from@email.com",
 		"to_address":"to@email.com",
@@ -35,6 +36,5 @@
 		"hourOfTheDayForSendingAverages":"23"
 		}],
 		"useFahrenheits":"y",
-		"mailSendingTimeoutInFullHours":"1",
-		"adafruitPath":"/home/pi/Adafruit_Python_DHT/examples/AdafruitDHT.py"
+		"mailSendingTimeoutInFullHours":"1"
 }
