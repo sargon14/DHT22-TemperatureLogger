@@ -3,6 +3,7 @@ import logging
 
 from datetime import timedelta
 from Database.DbActions import DbActions
+from Utility.TemperatureConverter import TemperatureConverter
 
 
 class DbController():
@@ -171,12 +172,13 @@ class DbController():
 
         # Temperature to variable for better handling and understanding
         temperature = sensorData['temperature']
-
+        converter = TemperatureConverter()
+        temperature_f = converter.celsiusToFahrenheits(temperature)
         try:
             # Query to be executed
             sqlQuery = "INSERT INTO temperaturedata SET dateandtime='%s', \
-            sensor='%s', temperature='%s'" \
-            % (self.currentTimeAsString, sensor, temperature)
+            sensor='%s', temperature='%s', temperature_f='%s'" \
+            % (self.currentTimeAsString, sensor, temperature, temperature_f)
 
             # Execute
             self.dbActions.sqlInsert(sqlQuery)
