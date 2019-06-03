@@ -52,8 +52,7 @@ class SensorDataHandler():
                 try:
                     self.logger.info('Send warning to indicate that none of the sensors provided data')
                     # Send warning email
-                    self.mailSender.sendWarningEmail('Failed to get readings from any of the sensors. Please check debug log and \
-                    configurations from config.json')
+                    self.mailSender.sendWarningEmail('Failed to get readings from any of the sensors. Please check debug log and configurations from config.json')
                     # There are no values to continue with,
                     # so it is good to terminate
                     self.logger.warning('Warning mail sent, no measurement values to continue with...terminate')

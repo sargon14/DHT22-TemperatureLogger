@@ -96,9 +96,11 @@ class DbController():
         self.logger.info('Start reading last sensor measurements')
 
         # Sql query to be executed
-        sqlQuery = "SELECT * FROM temperaturedata WHERE sensor='%s' and \
-        dateandtime IN (SELECT max(dateandtime) FROM temperaturedata WHERE \
-        sensor='%s')" % (sensor, sensor)
+        # sqlQuery = "SELECT * FROM temperaturedata WHERE sensor='%s' and \
+        # dateandtime IN (SELECT max(dateandtime) FROM temperaturedata WHERE \
+        # sensor='%s')" % (sensor, sensor)
+        sqlQuery = "SELECT * FROM temperaturedata WHERE sensor='%s' ORDER BY \
+        dateandtime DESC LIMIT 1" % (sensor)
 
         # Execute and return data
         sensorData = self.dbActions.sqlSelect(sqlQuery)
