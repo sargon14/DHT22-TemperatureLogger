@@ -47,14 +47,11 @@ class SensorDataHandler():
             # If so, no need to continue.
             if len(self.failedSensors) == \
                     len(self.configurations["sensorConfig"]):
-                self.logger.error('Failed to get readings from any of the \
-                sensors. Execution terminated')
+                self.logger.error('Failed to get readings from any of the sensors. Execution terminated')
                 try:
-                    self.logger.info('Send warning to indicate that none of \
-                    the sensors provided data')
+                    self.logger.info('Send warning to indicate that none of the sensors provided data')
                     # Send warning email
-                    self.mailSender.sendWarningEmail('Failed to get readings \
-                    from any of the sensors. Please check debug log and \
+                    self.mailSender.sendWarningEmail('Failed to get readings from any of the sensors. Please check debug log and \
                     configurations from config.json')
                     # There are no values to continue with,
                     # so it is good to terminate
@@ -78,9 +75,7 @@ class SensorDataHandler():
                 self.logger.warning(
                     'Failed to get readings from sensor(s): {0}'
                     .format(', '.join(self.failedSensors)))
-                msg = 'Failed to get readings from sensor(s): {0}.\n\
-                Please check debug log from RPI for further info and double \
-                check your config.json'.format(', '.join(self.failedSensors))
+                msg = 'Failed to get readings from sensor(s): {0}.\nPlease check debug log from RPI for further info and double check your config.json'.format(', '.join(self.failedSensors))
                 try:
                     self.mailSender.sendWarningEmail(msg)
                 except Exception as e:
@@ -108,8 +103,7 @@ class SensorDataHandler():
         try:
             self._measurementCompareAgainstSetThreshold()
         except:
-            self.logger.error("Failed to perform comparison between measured \
-            data and set threshold", exc_info=True)
+            self.logger.error("Failed to perform comparison between measured data and set threshold", exc_info=True)
             raise
 
         # Check if measured values are beyond set limits
@@ -134,8 +128,7 @@ class SensorDataHandler():
                 self.dbControl.setSensorTemperatureAndHumidityToDb(key, value)
             except:
                 # Msg to separate variable, so that key can be added as well.
-                msg = 'Failed to persist temperature and humidity readings to \
-                database. Sensor : %s', key
+                msg = 'Failed to persist temperature and humidity readings to database. Sensor : %s', key
                 self.logger.error(msg, exc_info=True)
                 raise
             self.logger.info("Data persisting finished for sensor %s", key)
@@ -160,8 +153,7 @@ class SensorDataHandler():
             if (value['lastMeasuredTemperature'] != "") or \
                     (value['lastMeasuredHumidity'] != ""):
                 self.logger.info(
-                    'Last measured temperature to compare to: %s and Last \
-                    measured humidity to compare to: %s',
+                    'Last measured temperature to compare to: %s and Last measured humidity to compare to: %s',
                     value['lastMeasuredTemperature'],
                     value['lastMeasuredHumidity'])
                 self.logger.info(
@@ -181,8 +173,7 @@ class SensorDataHandler():
                         self.compareMeasurements.checkHumidityChange()
                 except Exception as e:
                     self.logger.error(
-                        'Failed to compare sensor temperatures (last and \
-                        current) against threshold limits:\n', exc_info=True)
+                        'Failed to compare sensor temperatures (last and current) against threshold limits:\n', exc_info=True)
                     raise
 
                 # Check if send warning flag is true after comparisons
@@ -197,16 +188,14 @@ class SensorDataHandler():
                                           exc_info=True)
                         raise
             else:
-                self.logger.warning('There was no previous measurements for \
-                temperature or humidity. Nothing to compare to')
+                self.logger.warning('There was no previous measurements for temperature or humidity. Nothing to compare to')
             self.logger.info('Threshold comparison done for sensor %s', key)
 
     def _compareReadValuesWithSetLimits(self):
         '''Compare measured temperature and humidity with set trigger limits'''
 
         for key, value in self.readingsFromSensors.iteritems():
-            self.logger.info('Perform delta check compare against previously \
-            measured results for sensor %s', key)
+            self.logger.info('Perform delta check compare against previously measured results for sensor %s', key)
 
             # Set flags to begin with
             betweenLimits = True

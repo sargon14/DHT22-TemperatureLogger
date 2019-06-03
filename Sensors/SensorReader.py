@@ -37,8 +37,7 @@ class DS18B20SensorReader():
         failedSensors = []
 
         # Sensor readings
-        self.logger.info('Starting to collect temperature and humidity data \
-        from the the sensors')
+        self.logger.info('Starting to collect temperature and humidity data from the the sensors')
         for sensor in self.configurations["sensorConfig"]:
             sensorName = sensor['name']
             # Log entry to indicate what sensor
@@ -114,8 +113,7 @@ class DS18B20SensorReader():
                 continue
 
             try:
-                self.logger.info('Checking when last mail regarding this \
-                sensor was sent out. Sensor=%s', sensorName)
+                self.logger.info('Checking when last mail regarding this sensor was sent out. Sensor=%s', sensorName)
                 # Check when last warning/email was sent for this sensor
                 mailSentTime = \
                     self.dbControl.getLastSensorMailSentTime(sensorName)
@@ -125,13 +123,11 @@ class DS18B20SensorReader():
                 if mailSentTime is None:
                     self.logger.warning('No entry for last mail sent')
                 else:
-                    self.logger.info('Last mail regarding this sensor was \
-                    sent out on: %s', mailSentTime)
+                    self.logger.info('Last mail regarding this sensor was sent out on: %s', mailSentTime)
                     readingsFromSensors[sensorName]['lastMailSent'] = \
                         mailSentTime
             except Exception as e:
-                self.logger.error('Failed to get entry when last mail \
-                regarding this sensor was sent out.\n', exc_info=True)
+                self.logger.error('Failed to get entry when last mail regarding this sensor was sent out.\n', exc_info=True)
                 raise
 
             # Get and store information about the last measured temperature
@@ -140,8 +136,7 @@ class DS18B20SensorReader():
             # readingsFromSensors[sensorName]['lastMeasuredTemperature'] = 23
             # readingsFromSensors[sensorName]['lastMeasuredHumidity'] = 70
             try:
-                self.logger.info('Collecting previously measured values for \
-                sensor=%s', sensorName)
+                self.logger.info('Collecting previously measured values for sensor=%s', sensorName)
 
                 lastMeasuredValues = \
                     self.dbControl.getLastSensorMeasurements(sensorName)
@@ -156,8 +151,7 @@ class DS18B20SensorReader():
                     #     = lastMeasuredValues[3]
                     self.logger.info('Previously measured values collected')
             except Exception as e:
-                self.logger.error('Failed to get previously measured values \
-                for the sensor', exc_info=True)
+                self.logger.error('Failed to get previously measured values for the sensor', exc_info=True)
                 raise
 
         self.logger.info('Sensor readings collected')
@@ -186,8 +180,7 @@ class DS18B20SensorReader():
 
         # Finally, check if fahrenheits are wanted
         if self.fahrenheitConfig.lower() == "y":
-            self.logger.warning("Fahrenheits enabled in configurations. \
-            Converting sensor temperature reading to fahrenheits")
+            self.logger.warning("Fahrenheits enabled in configurations. Converting sensor temperature reading to fahrenheits")
 
             # If yes, instantiate converter and convert celsius to fahrenheits
             converter = TemperatureConverter()
@@ -241,8 +234,7 @@ class SensorReader():
         failedSensors = []
 
         # Sensor readings
-        self.logger.info('Starting to collect temperature and humidity data \
-        from the the sensors')
+        self.logger.info('Starting to collect temperature and humidity data from the the sensors')
         for sensor in self.configurations["sensorConfig"]:
 
             # Set sensor name, gpio and type to variables for easier use
@@ -273,8 +265,7 @@ class SensorReader():
 
                 # Store sensor readings for further use
                 self.logger.info(
-                    'Readings: Temperature: %s , Humidity: %s. Store sensor \
-                    readings for handling', temperature, humidity)
+                    'Readings: Temperature: %s , Humidity: %s. Store sensor readings for handling', temperature, humidity)
                 # Float conversions already done in _getSensorReadings
                 readingsFromSensors[sensorName]['temperature'] = temperature
                 readingsFromSensors[sensorName]['humidity'] = humidity
@@ -314,8 +305,7 @@ class SensorReader():
                 continue
 
             try:
-                self.logger.info('Checking when last mail regarding this \
-                sensor was sent out. Sensor=%s', sensorName)
+                self.logger.info('Checking when last mail regarding this sensor was sent out. Sensor=%s', sensorName)
                 # Check when last warning/email was sent for this sensor
                 mailSentTime = \
                     self.dbControl.getLastSensorMailSentTime(sensorName)
@@ -325,13 +315,11 @@ class SensorReader():
                 if mailSentTime is None:
                     self.logger.warning('No entry for last mail sent')
                 else:
-                    self.logger.info('Last mail regarding this sensor was \
-                    sent out on: %s', mailSentTime)
+                    self.logger.info('Last mail regarding this sensor was sent out on: %s', mailSentTime)
                     readingsFromSensors[sensorName]['lastMailSent'] = \
                         mailSentTime
             except Exception as e:
-                self.logger.error('Failed to get entry when last mail \
-                regarding this sensor was sent out.\n', exc_info=True)
+                self.logger.error('Failed to get entry when last mail regarding this sensor was sent out.\n', exc_info=True)
                 raise
 
             # Get and store information about the last measured temperature
@@ -340,8 +328,7 @@ class SensorReader():
             # readingsFromSensors[sensorName]['lastMeasuredTemperature'] = 23
             # readingsFromSensors[sensorName]['lastMeasuredHumidity'] = 70
             try:
-                self.logger.info('Collecting previously measured values for \
-                sensor=%s', sensorName)
+                self.logger.info('Collecting previously measured values for sensor=%s', sensorName)
 
                 lastMeasuredValues = \
                     self.dbControl.getLastSensorMeasurements(sensorName)
@@ -355,8 +342,7 @@ class SensorReader():
                         = lastMeasuredValues[3]
                     self.logger.info('Previously measured values collected')
             except Exception as e:
-                self.logger.error('Failed to get previously measured values \
-                for the sensor', exc_info=True)
+                self.logger.error('Failed to get previously measured values for the sensor', exc_info=True)
                 raise
 
         self.logger.info('Sensor readings collected')
@@ -415,8 +401,7 @@ class SensorReader():
 
         # Finally check if fahrenheits are wanted
         if self.fahrenheitConfig.lower() == "y":
-            self.logger.warning("Fahrenheits enabled in configurations. \
-            Converting sensor temperature reading to fahrenheits")
+            self.logger.warning("Fahrenheits enabled in configurations. Converting sensor temperature reading to fahrenheits")
 
             # If yes, instantiate converter and convert celsius to fahrenheits
             converter = TemperatureConverter()
