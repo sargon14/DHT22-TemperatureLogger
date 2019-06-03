@@ -178,13 +178,15 @@ class DS18B20SensorReader():
         self.logger.info('Sensor value reading finished')
 
         # Finally, check if fahrenheits are wanted
-        if self.fahrenheitConfig.lower() == "y":
-            self.logger.warning("Fahrenheits enabled in configurations. Converting sensor temperature reading to fahrenheits")
-
-            # If yes, instantiate converter and convert celsius to fahrenheits
-            # converter = TemperatureConverter()
-            # sensorTemp = converter.celsiusToFahrenheits(sensorTemp)
-        else:
+        # I've actually disabled this because I'm just going to convert to
+        # Fahrenheit when the stuff gets written to the database
+        # if self.fahrenheitConfig.lower() == "y":
+        #     self.logger.warning("Fahrenheits enabled in configurations. Converting sensor temperature reading to fahrenheits")
+        #
+        #     # If yes, instantiate converter and convert celsius to fahrenheits
+        #     # converter = TemperatureConverter()
+        #     # sensorTemp = converter.celsiusToFahrenheits(sensorTemp)
+        # else:
             self.logger.info('Sensor temperature values as celsius')
 
         # not needed right now, I don't think

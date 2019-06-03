@@ -60,9 +60,9 @@ class ConfigHandler():
         dumpConfig = self.ConfigAdapter.getBackupDumpConfig()
 
         # dumpConfigs to variables for better understandability
-        dumpEnabled = dumpConfig["backupDumpConfig"][0]["backupDumpEnabled"]
-        backupDay = dumpConfig["backupDumpConfig"][0]["backupDay"]
-        backupHour = dumpConfig["backupDumpConfig"][0]["backupHour"]
+        dumpEnabled = dumpConfig["backupDumpConfig"]["backupDumpEnabled"]
+        backupDay = dumpConfig["backupDumpConfig"]["backupDay"]
+        backupHour = dumpConfig["backupDumpConfig"]["backupHour"]
 
         self.logger.info("Check if dump is enabled")
         if dumpEnabled.lower() == "y":
@@ -84,9 +84,9 @@ class ConfigHandler():
         averagesSendingConfig = self.ConfigAdapter.getAveragesSendingConfig()
 
         # Average configurations to variables for better understandability
-        sendingEnabled = averagesSendingConfig["averagesSendingConfig"][0]["weeklyAverageSendingEnabled"]
-        sendingDay = averagesSendingConfig["averagesSendingConfig"][0]["weekDayForSendingAverages"]
-        sendingHour = averagesSendingConfig["averagesSendingConfig"][0]["hourOfTheDayForSendingAverages"]
+        sendingEnabled = averagesSendingConfig["averagesSendingConfig"]["weeklyAverageSendingEnabled"]
+        sendingDay = averagesSendingConfig["averagesSendingConfig"]["weekDayForSendingAverages"]
+        sendingHour = averagesSendingConfig["averagesSendingConfig"]["hourOfTheDayForSendingAverages"]
 
         self.logger.info("Check if weekly averages sending is enabled")
         if sendingEnabled.lower() == "y":

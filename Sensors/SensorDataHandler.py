@@ -184,7 +184,7 @@ class SensorDataHandler():
                                           exc_info=True)
                         raise
             else:
-                self.logger.warning('There was no previous measurements for temperature. Nothing to compare to')
+                self.logger.warning('There were no previous measurements for temperature. Nothing to compare to!')
             self.logger.info('Threshold comparison done for sensor %s', key)
 
     def _compareReadValuesWithSetLimits(self):

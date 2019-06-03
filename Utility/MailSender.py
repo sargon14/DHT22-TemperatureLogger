@@ -140,13 +140,11 @@ class MailSender():
                 # Calculate how many seconds passed since last mail was sent
                 delta = (self.currentTime - lastMailSentTime[0])\
                     .total_seconds()
-                self.logger.info('Time delta in seconds between current time \
-                and time when last mail was sended: %s', delta)
+                self.logger.info('Time delta in seconds between current time and time when last mail was sent: %s', delta)
 
                 # Divide delta with seconds to get passed time in full hours
                 passedTime = delta // 3600
-                self.logger.info('Hours passed since current time and time \
-                when last mail was sended: %s', passedTime)
+                self.logger.info('Hours passed since current time and time when last mail was sent: %s', passedTime)
 
                 self.logger.info(
                     'Comparing passed time with set timeout: %s h',

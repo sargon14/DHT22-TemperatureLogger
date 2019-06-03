@@ -64,8 +64,7 @@ class MeasurementCompare():
         # to False and warning gets sent
         if float(self.measuredTemperature) < float(self.temperatureLowLimit):
             self.limitCheckWarningMsg = \
-                "WARNING: Temperature low on sensor: {0}\nTemperature: \
-                {1}\nTemperature low limit: {2}\nhumidity: {3}\n".format(
+                "WARNING: Temperature low on sensor: {0}\nTemperature: {1}\nTemperature low limit: {2}\nhumidity: {3}\n".format(
                     self.sensor, self.measuredTemperature,
                     self.temperatureLowLimit, self.measuredHumidity)
             # This is True to begin with, changed to false if
@@ -79,8 +78,7 @@ class MeasurementCompare():
         elif float(self.measuredTemperature) > \
                 float(self.temperatureHighLimit):
             self.limitCheckWarningMsg = \
-                "WARNING: Temperature high on sensor: {0}\nTemperature: \
-                {1}\nTemperature high limit: {2}\nhumidity: {3}\n".format(
+                "WARNING: Temperature high on sensor: {0}\nTemperature: {1}\nTemperature high limit: {2}\nhumidity: {3}\n".format(
                     self.sensor, self.measuredTemperature,
                     self.temperatureHighLimit, self.measuredHumidity)
             # This is True to begin with, changed to false if
@@ -103,8 +101,7 @@ class MeasurementCompare():
         # set betweenlimits to False and warning gets sent
         if float(self.measuredHumidity) < float(self.humidityLowLimit):
             self.limitCheckWarningMsg = self.limitCheckWarningMsg + \
-                "WARNING: Humidity low on sensor: {0}\nTemperature: {1}\n\
-                Humidity low limit: {2}\nHumidity: {3}\n".format(
+                "WARNING: Humidity low on sensor: {0}\nTemperature: {1}\nHumidity low limit: {2}\nHumidity: {3}\n".format(
                     self.sensor, self.measuredTemperature,
                     self.humidityLowLimit, self.measuredHumidity)
             self.betweenLimits = False
@@ -114,8 +111,7 @@ class MeasurementCompare():
         # set betweenlimits to False and warning gets sent
         elif float(self.measuredHumidity) > float(self.humidityHighLimit):
             self.limitCheckWarningMsg = self.limitCheckWarningMsg + \
-                "WARNING: Humidity high on sensor: {0}\nTemperature: {1}\n\
-                Humidity high limit: {2}\nHumidity: {3}\n".format(
+                "WARNING: Humidity high on sensor: {0}\nTemperature: {1}\nHumidity high limit: {2}\nHumidity: {3}\n".format(
                     self.sensor, self.measuredTemperature,
                     self.humidityHighLimit, self.measuredHumidity)
             self.betweenLimits = False
@@ -146,8 +142,7 @@ class MeasurementCompare():
             self.logger.info(
                 "Previous temperature is available, execute comparison")
             self.logger.info(
-                "Measured temperature = %s, previously measured temperature \
-                %s, temperature treshold %s", self.measuredTemperature,
+                "Measured temperature = %s, previously measured temperature %s, temperature treshold %s", self.measuredTemperature,
                 float(self.previousTemperature), self.temperatureThreshold)
 
             # Check if measured temperature is greater than previously
@@ -159,9 +154,7 @@ class MeasurementCompare():
                 self.sendWarning = True
                 # Compose warning message to be sended out
                 self.warningMsg = \
-                    "WARNING: Temperature increased more than {0} {1} on \
-                    sensor {2}\nMeasured temperature: {3} {1}\nPrevious \
-                    temperature: {4} {1}".format(
+                    "WARNING: Temperature increased more than {0} {1} on sensor {2}\nMeasured temperature: {3} {1}\nPrevious temperature: {4} {1}".format(
                         self.temperatureThreshold, measurementUnit,
                         self.sensor, self.measuredTemperature,
                         self.previousTemperature)
@@ -177,9 +170,7 @@ class MeasurementCompare():
                 self.sendWarning = True
                 # Compose warning message to be sended out
                 self.warningMsg = \
-                    "WARNING: Temperature decreased more than {0} {1} on \
-                    sensor {2}\nMeasured temperature: {3} {1}\nPrevious \
-                    temperature: {4} {1}".format(
+                    "WARNING: Temperature decreased more than {0} {1} on sensor {2}\nMeasured temperature: {3} {1}\nPrevious temperature: {4} {1}".format(
                         self.temperatureThreshold, measurementUnit,
                         self.sensor, self.measuredTemperature,
                         self.previousTemperature)
@@ -205,8 +196,7 @@ class MeasurementCompare():
             self.logger.info(
                 "Previous humidity is available, execute comparison")
             self.logger.info(
-                "Measured humidity = %s, previously measured humidity %s, \
-                humidity treshold %s", self.measuredHumidity,
+                "Measured humidity = %s, previously measured humidity %s, humidity treshold %s", self.measuredHumidity,
                 float(self.previousHumidity), self.humidityThreshold)
 
             # Check if measured humidity is greater than previously
@@ -220,9 +210,7 @@ class MeasurementCompare():
                 # Note that this will add new warningmessage after first in
                 # case that also temperature comps caused warning to be sent
                 self.warningMsg = \
-                    self.warningMsg + "WARNING: Humidity increased {0} \
-                    percents on sensor {1}\nMeasured humidity: {2} \nPrevious \
-                    humidity: {3}".format(
+                    self.warningMsg + "WARNING: Humidity increased {0} percents on sensor {1}\nMeasured humidity: {2} \nPrevious humidity: {3}".format(
                         self.humidityThreshold, self.sensor,
                         self.measuredHumidity, self.previousHumidity)
                 self.logger.warning(
@@ -239,17 +227,14 @@ class MeasurementCompare():
                 # Note that this will add new warningmessage after first in
                 # case that also temperature comps caused warning to be sent
                 self.warningMsg = \
-                    self.warningMsg + "WARNING: Humidity decreased {0} \
-                    percents on sensor {1}\nMeasured humidity: {2} \nPrevious \
-                    humidity: {3}".format(
+                    self.warningMsg + "WARNING: Humidity decreased {0} percents on sensor {1}\nMeasured humidity: {2} \nPrevious humidity: {3}".format(
                         self.humidityThreshold, self.sensor,
                         self.measuredHumidity, self.previousHumidity)
                 self.logger.warning(
                     "Humidity has decreased more than set threshold")
         else:
             self.logger.warning(
-                "...Previous humidity value not available, \
-                nothing to compare to")
+                "...Previous humidity value not available, nothing to compare to")
 
         self.logger.info("Comparison done")
         return self.sendWarning, self.warningMsg
