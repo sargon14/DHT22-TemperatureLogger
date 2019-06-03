@@ -148,12 +148,10 @@ class SensorDataHandler():
 
             # If there is no earlier temperature or humidity measurements
             # available, skip this
-            if (value['lastMeasuredTemperature'] != "") or \
-                    (value['lastMeasuredHumidity'] != ""):
+            if value['lastMeasuredTemperature'] != "":
                 self.logger.info(
-                    'Last measured temperature to compare to: %s and Last measured humidity to compare to: %s',
-                    value['lastMeasuredTemperature'],
-                    value['lastMeasuredHumidity'])
+                    'Last measured temperature to compare to: %s',
+                    value['lastMeasuredTemperature'])
                 self.logger.info(
                     'Execute measurement compare against set threshold')
                 try:
@@ -167,8 +165,8 @@ class SensorDataHandler():
 
                     # Check also humidity for the same than temperature above.
                     # Append possible warnings to messagesToSend
-                    sendWarning, messageToSend = \
-                        self.compareMeasurements.checkHumidityChange()
+                    # sendWarning, messageToSend = \
+                    #     self.compareMeasurements.checkHumidityChange()
                 except Exception as e:
                     self.logger.error(
                         'Failed to compare sensor temperatures (last and current) against threshold limits:\n', exc_info=True)
@@ -186,7 +184,7 @@ class SensorDataHandler():
                                           exc_info=True)
                         raise
             else:
-                self.logger.warning('There was no previous measurements for temperature or humidity. Nothing to compare to')
+                self.logger.warning('There was no previous measurements for temperature. Nothing to compare to')
             self.logger.info('Threshold comparison done for sensor %s', key)
 
     def _compareReadValuesWithSetLimits(self):
@@ -208,8 +206,8 @@ class SensorDataHandler():
                     self.compareMeasurements.checkTemperatureLimits()
 
                 # Compare measured humidity with set limits
-                betweenLimits, messageToSend = \
-                    self.compareMeasurements.checkHumidityLimits()
+                # betweenLimits, messageToSend = \
+                #     self.compareMeasurements.checkHumidityLimits()
             except Exception as e:
                 msg = 'Failed to perform comparison for Sensor: %s', key
                 self.logger.error(msg, exc_info=True)
