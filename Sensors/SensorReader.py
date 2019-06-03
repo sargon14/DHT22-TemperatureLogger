@@ -187,7 +187,7 @@ class DS18B20SensorReader():
         #     # converter = TemperatureConverter()
         #     # sensorTemp = converter.celsiusToFahrenheits(sensorTemp)
         # else:
-            self.logger.info('Sensor temperature values as celsius')
+        self.logger.info('Sensor temperature values as celsius')
 
         # not needed right now, I don't think
         # sensorTemperatureF = sensorTemperature * 1.8 + 32
