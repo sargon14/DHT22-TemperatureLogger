@@ -164,7 +164,7 @@ class DS18B20SensorReader():
             "Start reading values for sensor type {0}, ID {1}"
             .format(sensorType, sensorID))
 
-        sensor = W1ThermSensor(_getSensorTypeNum(sensorType), sensorID)
+        sensor = W1ThermSensor(self._getSensorTypeNum(sensorType), sensorID)
 
         sensorTemp = sensor.get_temperature(sensor.DEGREES_C)
 

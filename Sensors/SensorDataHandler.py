@@ -56,8 +56,7 @@ class SensorDataHandler():
                     configurations from config.json')
                     # There are no values to continue with,
                     # so it is good to terminate
-                    self.logger.warning('Warning mail sent, no measurement \
-                    values to continue with...terminate')
+                    self.logger.warning('Warning mail sent, no measurement values to continue with...terminate')
                     sys.exit(0)
                 except Exception as e:
                     self.logger.error('Warning mail sending failed',
@@ -146,8 +145,7 @@ class SensorDataHandler():
 
         # Start checking
         for key, value in self.readingsFromSensors.iteritems():
-            self.logger.info('Starting measurement comparison against set \
-            threshold for sensor %s', key)
+            self.logger.info('Starting measurement comparison against set threshold for sensor %s', key)
 
             # If there is no earlier temperature or humidity measurements
             # available, skip this
