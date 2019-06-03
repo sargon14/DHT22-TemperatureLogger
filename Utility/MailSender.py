@@ -21,14 +21,14 @@ class MailSender():
         self.dbController = dbController
 
         # Configurations to variables for easier use
-        self.username = configurations.get('mailConfig')[0]['username']
-        self.password = configurations.get('mailConfig')[0]['password']
-        self.sender = configurations.get('mailConfig')[0]['senderaddress']
-        self.receiver = configurations.get('mailConfig')[0]['receiveraddress']
+        self.username = configurations.get('mailConfig')['username']
+        self.password = configurations.get('mailConfig')['password']
+        self.sender = configurations.get('mailConfig')['senderaddress']
+        self.receiver = configurations.get('mailConfig')['receiveraddress']
         self.warningSubject = \
-            configurations.get('mailConfig')[0]['subjectwarning']
+            configurations.get('mailConfig')['subjectwarning']
         self.messageSubject = \
-            configurations.get('mailConfig')[0]['subjectmessage']
+            configurations.get('mailConfig')['subjectmessage']
         self.currentTimeAsString = configurations.get("currentTimeAsString")
         self.currentTime = configurations.get("currentTime")
         self.mailSendingTimeout = configurations.get("mailSendingTimeout")

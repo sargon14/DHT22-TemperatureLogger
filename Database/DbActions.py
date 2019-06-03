@@ -16,10 +16,10 @@ class DbActions():
         self.logger.info("DBActions instantiation started")
 
         # Set configuration data for variables for easier usage
-        self.host = configurations.get('sqlConfig')[0]['host']
-        self.user = configurations.get('sqlConfig')[0]['user']
-        self.password = configurations.get('sqlConfig')[0]['password']
-        self.database = configurations.get('sqlConfig')[0]['database']
+        self.host = configurations.get('sqlConfig')['host']
+        self.user = configurations.get('sqlConfig')['user']
+        self.password = configurations.get('sqlConfig')['password']
+        self.database = configurations.get('sqlConfig')['database']
         self.backupDumpConfig = configurations.get('backupDumpConfig')
         self.timeAsString = configurations.get('currentTimeAsString')
         self.dateAsString = configurations.get('dateAsString')
