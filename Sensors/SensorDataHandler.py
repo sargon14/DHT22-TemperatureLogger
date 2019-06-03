@@ -124,7 +124,7 @@ class SensorDataHandler():
             try:
                 # Call setSensorTemperatureAndHumidityToDb from dbcontrol.
                 # Provide sensor name and value
-                self.dbControl.setSensorTemperatureAndHumidityToDb(key, value)
+                self.dbControl.setSensorTemperatureToDb(key, value)
             except:
                 # Msg to separate variable, so that key can be added as well.
                 msg = 'Failed to persist temperature and humidity readings to database. Sensor : %s', key

@@ -164,6 +164,25 @@ class DbController():
         # Return sensors weekly average
         return weekAverageHumidity
 
+    def setSensorTemperatureToDb(self, sensor, sensorData):
+        '''Function for persisting temperature and humidity for the sensor'''
+        # TODO: Remove humidity, or maybe add a column to the database for it
+        self.logger.info("Starting to persist sensor readings to database")
+
+        # Temperature to variable for better handling and understanding
+        temperature = sensorData['temperature']
+
+        try:
+            # Query to be executed
+            sqlQuery = "INSERT INTO temperaturedata SET dateandtime='%s', \
+            sensor='%s', temperature='%s'" \
+            % (self.currentTimeAsString, sensor, temperature)
+
+            # Execute
+            self.dbActions.sqlInsert(sqlQuery)
+        except:
+            raise
+
     def setSensorTemperatureAndHumidityToDb(self, sensor, sensorData):
         '''Function for persisting temperature and humidity for the sensor'''
         # TODO: Remove humidity, or maybe add a column to the database for it
