@@ -182,8 +182,8 @@ class DS18B20SensorReader():
             self.logger.warning("Fahrenheits enabled in configurations. Converting sensor temperature reading to fahrenheits")
 
             # If yes, instantiate converter and convert celsius to fahrenheits
-            converter = TemperatureConverter()
-            sensorTemp = converter.celsiusToFahrenheits(sensorTemp)
+            # converter = TemperatureConverter()
+            # sensorTemp = converter.celsiusToFahrenheits(sensorTemp)
         else:
             self.logger.info('Sensor temperature values as celsius')
 
