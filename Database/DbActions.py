@@ -72,7 +72,7 @@ class DbActions():
         self.logger.info("Sql backup dump execution started")
 
         # Set dumpPath to variable for easier reference
-        dumpPath = self.backupDumpConfig[0]['backupDumpPath']
+        dumpPath = self.backupDumpConfig['backupDumpPath']
 
         # Getting current datetime to create seprate backup folder
         # like "12012013-071334".

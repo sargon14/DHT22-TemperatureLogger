@@ -29,8 +29,7 @@ class WeeklyAverages():
             self.dbController.getLastMailSentTime("Averages")
 
         self.logger.info(
-            'Delta check current time and last mail sent time. Last mail \
-            about average temperatures was sent out on: %s',
+            'Delta check current time and last mail sent time. Last mail about average temperatures was sent out on: %s',
             timeForLastAverageMail)
 
         # Check if there is no time entry for last mail sending
@@ -55,7 +54,7 @@ class WeeklyAverages():
                 # Get weekly average temperature for each sensor and append
                 # results to the message going out
                 for sensor in self.sensorConfig:
-                    sensor = sensor[0]['name']
+                    sensor = sensor['name']
                     # Get weekly average temperature for the sensor and append
                     # it to mail that will be sent
                     sensorWeeklyAverageTemp = \
