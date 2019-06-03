@@ -69,8 +69,7 @@ class DS18B20SensorReader():
                 #     'Readings: Temperature: %s , Humidity: %s. Store sensor \
                 #     readings for handling', temperature, humidity)
                 self.logger.info(
-                    'Reading: Temperature: %s. Store sensor \
-                    reading for handling', temperature)
+                    'Reading: Temperature: %s. Store sensor reading for handling', temperature)
                 # Float conversions already done in _getSensorReadings
                 readingsFromSensors[sensorName]['temperature'] = temperature
                 # readingsFromSensors[sensorName]['humidity'] = humidity

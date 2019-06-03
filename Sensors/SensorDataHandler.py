@@ -1,7 +1,7 @@
 import logging
 import sys
 
-from Sensors.SensorReader import SensorReader
+from Sensors.SensorReader import DS18B20SensorReader
 from Utility.MeasurementCompare import MeasurementCompare
 
 
@@ -19,7 +19,8 @@ class SensorDataHandler():
         self.mailSender = mailSender
         self.configurations = configurations
         # Instantiate sensor reader
-        self.sensorReader = SensorReader(self.configurations, self.dbControl)
+        # self.sensorReader = SensorReader(self.configurations, self.dbControl)
+        self.sensorReader = DS18B20SensorReader(self.configurations, self.dbControl)
         # Instantiate mesurement comparer
         self.compareMeasurements = MeasurementCompare(self.configurations)
         # Create empty list for readings
