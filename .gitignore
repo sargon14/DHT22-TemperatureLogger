@@ -2,6 +2,8 @@
 Backups/*/
 # Ignore log directory:
 Debugger/Logs/*
+# Ignore actual config file:
+config.json
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
