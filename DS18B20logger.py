@@ -26,7 +26,7 @@
 # makes use of this script, Adafruit DHT22 sensors and raspberry pi, visit :
 # http://www.instructables.com/id/Raspberry-PI-and-DHT22-temperature-and-humidity-lo/
 
-# !/usr/bin/python2
+# !/usr/bin/python3
 # coding=utf-8
 
 import sys
@@ -40,7 +40,6 @@ from Database.DbActionController import DbController
 from Database.DbActions import DbActions
 from Configurations.ConfigHandler import ConfigHandler
 from Sensors.SensorDataHandler import SensorDataHandler
-import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 
@@ -153,10 +152,10 @@ def main():
 
     dbHelper = DbActions(configurations)
     sqlCommand = "SELECT dateandtime, temperature_f FROM temperaturedata \
-    WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
+    WHERE dateandtime >= (NOW() - INTERVAL 24 HOUR) ORDER BY dateandtime"
     data = dbHelper.sqlSelectMany(sqlCommand)
-    outtimes = np.array([i[0] for i in data])
-    output = np.array([i[1] for i in data])
+    outtimes = [i[0] for i in data]
+    output = [i[1] for i in data]
     fig = plt.figure()
     ax = fig.add_subplot(111)
     ax.plot(outtimes, output)
