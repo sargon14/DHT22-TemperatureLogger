@@ -119,7 +119,7 @@ class SensorDataHandler():
         '''Private function for persisting sensor data to database'''
         # Check that there is values in readingsFromSensors collections
         # and add into database
-        for key, value in self.readingsFromSensors.iteritems():
+        for key, value in self.readingsFromSensors.items():
             self.logger.info("Start persisting data for sensor %s", key)
             try:
                 # Call setSensorTemperatureAndHumidityToDb from dbcontrol.
@@ -143,7 +143,7 @@ class SensorDataHandler():
         sendWarning = False
 
         # Start checking
-        for key, value in self.readingsFromSensors.iteritems():
+        for key, value in self.readingsFromSensors.items():
             self.logger.info('Starting measurement comparison against set threshold for sensor %s', key)
 
             # If there is no earlier temperature or humidity measurements
@@ -190,7 +190,7 @@ class SensorDataHandler():
     def _compareReadValuesWithSetLimits(self):
         '''Compare measured temperature and humidity with set trigger limits'''
 
-        for key, value in self.readingsFromSensors.iteritems():
+        for key, value in self.readingsFromSensors.items():
             self.logger.info('Perform delta check compare against previously measured results for sensor %s', key)
 
             # Set flags to begin with

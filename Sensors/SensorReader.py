@@ -4,6 +4,8 @@ import re
 import sys
 
 from w1thermsensor import W1ThermSensor
+from w1thermsensor.sensors import Sensor
+from w1thermsensor.units import Unit
 from Utility.TemperatureConverter import TemperatureConverter
 
 # TODO is there an Adafruit API that could be used instead of using
@@ -164,9 +166,10 @@ class DS18B20SensorReader():
             "Start reading values for sensor type {0}, ID {1}"
             .format(sensorType, sensorID))
 
-        sensor = W1ThermSensor(self._getSensorTypeNum(sensorType), sensorID)
+        # sensor = W1ThermSensor(self._getSensorTypeNum(sensorType), sensorID)
+        sensor = W1ThermSensor(Sensor(self._getSensorTypeNum(sensorType)), sensorID)
 
-        sensorTemp = sensor.get_temperature(sensor.DEGREES_C)
+        sensorTemp = sensor.get_temperature(Unit.DEGREES_C)
 
         self.logger.info("Values from sensor: %s", sensorTemp)
 
