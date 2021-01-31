@@ -24,17 +24,17 @@
 		"subjectmessage":"Info from temperature logger",
 		"subjectwarning":"Warning from temperature logger"
 	},
-	"sqlBackupDump":[{
+	"sqlBackupDump":{
 		"backupDumpEnabled":"y",
 		"backupDay":"1",
 		"backupHour":"23",
 		"backupDumpPath":"/home/pi/DS18B20-TemperatureLogger/Backups/"
-	}],
-	"weeklyAverages":[{
+	},
+	"weeklyAverages":{
 		"weeklyAverageSendingEnabled":"y",
 		"weekDayForSendingAverages":"1",
 		"hourOfTheDayForSendingAverages":"23"
-		}],
+		},
 		"useFahrenheits":"y",
 		"mailSendingTimeoutInFullHours":"1"
 }
