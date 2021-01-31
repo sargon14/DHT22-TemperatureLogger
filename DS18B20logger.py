@@ -1,4 +1,4 @@
-﻿# Copyright (c) 2015
+# Copyright (c) 2015
 # Author: Janne Posio
 
 # Permission is hereby granted, free of charge, to any person obtaining a copy
@@ -37,8 +37,12 @@ from Debugger.Logger import Logger
 from Utility.MailSender import MailSender
 from Utility.WeeklyAverages import WeeklyAverages
 from Database.DbActionController import DbController
+from Database.DbActions import DbActions
 from Configurations.ConfigHandler import ConfigHandler
 from Sensors.SensorDataHandler import SensorDataHandler
+import numpy as np
+import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter
 
 
 def main():
@@ -147,6 +151,19 @@ def main():
 
     logger.info("DS18B20logger execution finished\n")
 
+    dbHelper = DbActions(configurations)
+    sqlCommand = "SELECT dateandtime, temperature_f FROM temperaturedata \
+    WHERE dateandtime >= (NOW() - INTERVAL 12 HOUR) ORDER BY dateandtime"
+    data = dbHelper.sqlSelectMany(sqlCommand)
+    outtimes = np.array([i[0] for i in data])
+    output = np.array([i[1] for i in data])
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.plot(outtimes, output)
+    xfmt = DateFormatter("%H:%M")
+    ax.xaxis.set_major_formatter(xfmt)
+    ax.grid(True)
+    fig.savefig('/var/www/html/test.svg')
 
 if __name__ == "__main__":
     main()

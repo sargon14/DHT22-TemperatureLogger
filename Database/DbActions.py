@@ -46,6 +46,26 @@ class DbActions():
         self.logger.info("Executing Sql SELECT finished")
         return data
 
+    def sqlSelectMany(self, sqlQuery):
+        '''Select Many function'''
+        self.logger.info('Executing Sql SELECT (many)')
+
+        # Connect to db
+        db = pymysql.connect(self.host, self.user, self.password,
+                             self.database)
+        cursor = db.cursor()
+
+        try:
+            # Execute passed in query
+            cursor.execute(sqlQuery)
+            data = cursor.fetchall()
+        except:
+            self.logger.error("Executing Sql SELECT (many) failed")
+            raise
+
+        self.logger.info("Executing Sql SELECT (many) finished")
+        return data
+
     def sqlInsert(self, sqlQuery):
         '''Insert function'''
 
