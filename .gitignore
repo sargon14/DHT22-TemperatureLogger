@@ -1,5 +1,7 @@
 # Ignore backup directories:
 Backups/*/
+# Ignore log directory:
+Debugger/Logs/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
